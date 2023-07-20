@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Desktop } from './components/Desktop';
-import { LockScreen } from './components/LockScreen';
 import './index.css';
+import { LockScreen } from './pages/LockScreen';
 function App() {
   const [lock, setLock] = useState(true);
   return <>{lock ? <LockScreen /> : <Desktop />}</>;
