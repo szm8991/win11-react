@@ -1,4 +1,4 @@
-import { useBatteryStatus } from '@/hooks/useBatteryStatus';
+import { useBatteryStatus } from '@/hooks/useBatteryStatus.old';
 import { useEffect, useRef, useState } from 'react';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
@@ -7,7 +7,7 @@ export const LockScreen = () => {
   const [login, setLogin] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const battery = useBatteryStatus();
-
+  console.log(battery);
   const toggleLogin = () => {
     if (login == false) {
       setLogin(true);
@@ -35,7 +35,8 @@ export const LockScreen = () => {
     >
       <TopTimer login={login} />
       <UserLogin login={login} />
-      <div className="absolute right-6 bottom-6 z-10 flex">电池:{battery.current?.level}</div>;
+      {/* <div className="absolute right-6 bottom-6 z-10 flex">电池:{battery?.level}</div> */}
+      <div className="absolute right-6 bottom-6 z-10 flex">电池:{battery.current?.level}</div>
     </div>
   );
 };

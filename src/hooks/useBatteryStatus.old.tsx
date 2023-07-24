@@ -24,25 +24,26 @@ interface BatteryManagerEventTarget extends EventTarget {
     useCapture?: boolean
   ): void;
 }
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 export function useBatteryStatus() {
-  const [battery, setBattery] = useState<BatteryManager>();
+  const battery = useRef<BatteryManager>();
+  const [_, forceUpdate] = useReducer((x: number) => x + 1, 0);
   const updateBatteryStatus = () => {
     void (async () => {
-      const batteryStatus = await navigator.getBattery();
-      setBattery(batteryStatus);
+      battery.current = await navigator.getBattery();
+      forceUpdate();
     })();
   };
   useEffect(() => {
     updateBatteryStatus();
     if (!(battery instanceof BatteryManager)) return;
-    battery.addEventListener('chargingchange', updateBatteryStatus);
-    battery.addEventListener('levelchange', updateBatteryStatus);
+    battery.current!.addEventListener('chargingchange', updateBatteryStatus);
+    battery.current!.addEventListener('levelchange', updateBatteryStatus);
 
     return () => {
       if (!(battery instanceof BatteryManager)) return;
-      battery.removeEventListener('chargingchange', updateBatteryStatus);
-      battery.removeEventListener('levelchange', updateBatteryStatus);
+      battery.current!.removeEventListener('chargingchange', updateBatteryStatus);
+      battery.current!.removeEventListener('levelchange', updateBatteryStatus);
     };
   }, [battery]);
   return battery;
