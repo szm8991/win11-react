@@ -1,0 +1,16 @@
+.signInBtn {
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  padding: 4px 36px 6px;
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  user-select: none;
+  &:hover {
+    border: 2px solid rgba(255, 255, 255, 0.33);
+  }
+  &:active {
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.33);
+  }
+}
