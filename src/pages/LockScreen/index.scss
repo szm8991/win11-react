@@ -1,0 +1,23 @@
+.lockscreen {
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 500ms ease-in-out;
+}
+
+.lockscreen[data-blur='true']::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  backdrop-filter: blur(25px);
+  background: rgba(0, 0, 0, 0.1);
+}
