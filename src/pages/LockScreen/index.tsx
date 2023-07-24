@@ -1,10 +1,12 @@
+import { useBatteryStatus } from '@/hooks/useBatteryStatus';
 import { useEffect, useRef, useState } from 'react';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';
 export const LockScreen = () => {
   const [login, setLogin] = useState(false);
-  const timeoutRef = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const battery = useBatteryStatus();
 
   const toggleLogin = () => {
     if (login == false) {
@@ -18,7 +20,7 @@ export const LockScreen = () => {
 
   useEffect(() => {
     return () => {
-      clearInterval(timeoutRef.current);
+      clearInterval(timeoutRef.current!);
     };
   }, []);
 
@@ -33,6 +35,7 @@ export const LockScreen = () => {
     >
       <TopTimer login={login} />
       <UserLogin login={login} />
+      <div className="absolute right-6 bottom-6 z-10 flex">电池:{battery.current?.level}</div>;
     </div>
   );
 };
