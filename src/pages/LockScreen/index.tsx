@@ -24,7 +24,7 @@ export const LockScreen = () => {
 
   return (
     <div
-      className="absolute inset-0 bg-cover bg-no-repeat bg-center flex flex-col items-center z-10"
+      className="absolute inset-0 min-h-screen min-w-sreen bg-cover bg-no-repeat bg-center flex flex-col items-center z-10 transition-all"
       style={{
         backgroundImage: `url(${`imgs/wallpaper/lock.jpg`})`,
       }}
