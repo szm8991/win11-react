@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/node': ^20.4.4
   '@types/react': ^18.2.14
   '@types/react-dom': ^18.2.6
   '@typescript-eslint/eslint-plugin': ^5.61.0
@@ -23,6 +24,7 @@ dependencies:
   react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
 
 devDependencies:
+  '@types/node': registry.npmmirror.com/@types/node/20.4.4
   '@types/react': registry.npmmirror.com/@types/react/18.2.15
   '@types/react-dom': registry.npmmirror.com/@types/react-dom/18.2.7
   '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/5.62.0_tbbci4he2x65aggpp4j2oxxdvm
@@ -36,7 +38,7 @@ devDependencies:
   sass: registry.npmmirror.com/sass/1.64.1
   tailwindcss: registry.npmmirror.com/tailwindcss/3.3.3
   typescript: registry.npmmirror.com/typescript/5.1.6
-  vite: registry.npmmirror.com/vite/4.4.4_sass@1.64.1
+  vite: registry.npmmirror.com/vite/4.4.4_ead6w4q5d65ntwg5hqdxk6kde4
 
 packages:
 
@@ -585,6 +587,12 @@ packages:
     version: 7.0.12
     dev: true
 
+  registry.npmmirror.com/@types/node/20.4.4:
+    resolution: {integrity: sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-20.4.4.tgz}
+    name: '@types/node'
+    version: 20.4.4
+    dev: true
+
   registry.npmmirror.com/@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/prop-types/-/prop-types-15.7.5.tgz}
     name: '@types/prop-types'
@@ -781,7 +789,7 @@ packages:
       vite: ^4
     dependencies:
       '@swc/core': registry.npmmirror.com/@swc/core/1.3.70
-      vite: registry.npmmirror.com/vite/4.4.4_sass@1.64.1
+      vite: registry.npmmirror.com/vite/4.4.4_ead6w4q5d65ntwg5hqdxk6kde4
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -2322,7 +2330,7 @@ packages:
     version: 1.0.2
     dev: true
 
-  registry.npmmirror.com/vite/4.4.4_sass@1.64.1:
+  registry.npmmirror.com/vite/4.4.4_ead6w4q5d65ntwg5hqdxk6kde4:
     resolution: {integrity: sha512-4mvsTxjkveWrKDJI70QmelfVqTm+ihFAb6+xf4sjEU2TmUCTlVX87tmg/QooPEMQb/lM9qGHT99ebqPziEd3wg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite/-/vite-4.4.4.tgz}
     id: registry.npmmirror.com/vite/4.4.4
     name: vite
@@ -2353,6 +2361,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': registry.npmmirror.com/@types/node/20.4.4
       esbuild: registry.npmmirror.com/esbuild/0.18.14
       postcss: registry.npmmirror.com/postcss/8.4.26
       rollup: registry.npmmirror.com/rollup/3.26.3
