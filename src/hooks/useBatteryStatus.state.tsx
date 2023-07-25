@@ -24,27 +24,33 @@ interface BatteryManagerEventTarget extends EventTarget {
     useCapture?: boolean
   ): void;
 }
-import { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useState } from 'react';
 export function useBatteryStatus() {
-  const battery = useRef<BatteryManager>();
-  const [_, forceUpdate] = useReducer((x: number) => x + 1, 0);
+  const [battery, setBattery] = useState<BatteryManager>();
+  const [level, setLevel] = useState<number>();
+  const [charging, setCharging] = useState<boolean>();
   const updateBatteryStatus = () => {
     void (async () => {
-      battery.current = await navigator.getBattery();
-      forceUpdate();
+      const batteryStatus = await navigator.getBattery();
+      setBattery(batteryStatus);
+      setLevel(batteryStatus.level);
+      setCharging(batteryStatus.charging);
     })();
   };
   useEffect(() => {
     updateBatteryStatus();
     if (!(battery instanceof BatteryManager)) return;
-    battery.current!.addEventListener('chargingchange', updateBatteryStatus);
-    battery.current!.addEventListener('levelchange', updateBatteryStatus);
+    battery.addEventListener('chargingchange', updateBatteryStatus);
+    battery.addEventListener('levelchange', updateBatteryStatus);
 
     return () => {
       if (!(battery instanceof BatteryManager)) return;
-      battery.current!.removeEventListener('chargingchange', updateBatteryStatus);
-      battery.current!.removeEventListener('levelchange', updateBatteryStatus);
+      battery.removeEventListener('chargingchange', updateBatteryStatus);
+      battery.removeEventListener('levelchange', updateBatteryStatus);
     };
   }, [battery]);
-  return battery;
+  return {
+    level,
+    charging,
+  };
 }

@@ -1,0 +1,9 @@
+.battery {
+  display: flex;
+  position: relative;
+}
+
+.charger svg {
+  position: absolute;
+  z-index: 1;
+}
