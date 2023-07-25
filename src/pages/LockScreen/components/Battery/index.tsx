@@ -1,14 +1,13 @@
 import { useBatteryStatus } from '@/hooks/useBatteryStatus.ref';
-
 export const Battery: React.FC<NonNullable<unknown>> = () => {
   const { level, charging } = useBatteryStatus();
 
   return (
     <>
       <div className="invert">
-        <span className="battery">
+        <span className="flex relative">
           {charging ? (
-            <div className="charger">
+            <div className="absolute z-10">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="12"
@@ -40,7 +39,7 @@ export const Battery: React.FC<NonNullable<unknown>> = () => {
           </svg>
           <div
             className="absolute overflow-hidden z-0"
-            style={{ width: `${Math.round(Math.abs((level ?? 1) * 100))}%` }}
+            style={{ width: `${Math.round(Math.abs((level ?? 1) * 100 * 0.7))}%` }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +56,7 @@ export const Battery: React.FC<NonNullable<unknown>> = () => {
             </svg>
           </div>
         </span>
+        {/* <div className="text-xs">{Math.round(Math.abs((level ?? 1) * 100))}%</div> */}
       </div>
     </>
   );
