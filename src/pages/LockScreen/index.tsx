@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Battery } from './components/Battery';
+import { Icon } from './components/Icon';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';
@@ -35,10 +36,8 @@ export const LockScreen = () => {
       <TopTimer login={login} />
       <UserLogin login={login} />
       <div className="absolute right-6 bottom-6 z-10 flex">
-        <div className="mx-2 relative grid place-items-center invert">
-          <img className="w-4" src="imgs/icon/wifi.png" />
-        </div>
-        <Battery />
+        <Icon src="wifi" width={16} invert />
+        <Battery invert />
       </div>
       {/* <div className="absolute right-6 bottom-6 z-10 flex">电池:{battery.current?.level}</div> */}
     </div>
