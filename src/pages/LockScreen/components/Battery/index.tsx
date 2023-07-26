@@ -1,10 +1,10 @@
 import { useBatteryStatus } from '@/hooks/useBatteryStatus.ref';
-export const Battery: React.FC<NonNullable<unknown>> = () => {
+export const Battery: React.FC<{ invert: boolean }> = props => {
   const { level, charging } = useBatteryStatus();
-
+  // console.log(level, charging);
   return (
     <>
-      <div className="invert">
+      <div className={props.invert ? 'invert' : ''}>
         <span className="flex relative">
           {charging ? (
             <div className="absolute z-10">
