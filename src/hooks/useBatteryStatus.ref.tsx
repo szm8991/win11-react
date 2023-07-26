@@ -30,10 +30,6 @@ export function useBatteryStatus() {
   const [level, setLevel] = useState<number>();
   const [charging, setCharging] = useState<boolean>();
 
-  void (async () => {
-    battery.current = await navigator.getBattery();
-  })();
-
   const updateBatteryStatus = () => {
     if (battery.current) {
       setLevel(battery.current.level);
@@ -41,17 +37,20 @@ export function useBatteryStatus() {
     }
   };
   useEffect(() => {
-    updateBatteryStatus();
-    if (!(battery.current instanceof BatteryManager)) return;
-    battery.current.addEventListener('chargingchange', updateBatteryStatus);
-    battery.current.addEventListener('levelchange', updateBatteryStatus);
-
-    return () => {
+    void (async () => {
+      battery.current = await navigator.getBattery();
+      updateBatteryStatus();
       if (!(battery.current instanceof BatteryManager)) return;
-      battery.current.removeEventListener('chargingchange', updateBatteryStatus);
-      battery.current.removeEventListener('levelchange', updateBatteryStatus);
-    };
-  }, [battery]);
+      battery.current.addEventListener('chargingchange', updateBatteryStatus);
+      battery.current.addEventListener('levelchange', updateBatteryStatus);
+
+      return () => {
+        if (!(battery.current instanceof BatteryManager)) return;
+        battery.current.removeEventListener('chargingchange', updateBatteryStatus);
+        battery.current.removeEventListener('levelchange', updateBatteryStatus);
+      };
+    })();
+  }, []);
   return {
     level,
     charging,
