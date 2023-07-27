@@ -13,7 +13,7 @@ export const LockScreen = () => {
   const toggleLogin = () => {
     if (login == false) {
       setLogin(true);
-      // 倒计时5秒后切换回来
+      // 倒计时30秒后切换回来
       timeoutRef.current = setTimeout(() => {
         setLogin(false);
       }, 30000);

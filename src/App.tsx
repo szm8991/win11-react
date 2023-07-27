@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { Desktop } from './components/Desktop';
+import { Desktop } from './pages/Desktop';
 import { LockScreen } from './pages/LockScreen';
 function App() {
-  const [lock, setLock] = useState(true);
-  return <div className="app">{lock ? <LockScreen /> : <Desktop />}</div>;
+  return (
+    <div className="app">
+      <Desktop />
+      <LockScreen />
+    </div>
+  );
 }
 
 export default App;
