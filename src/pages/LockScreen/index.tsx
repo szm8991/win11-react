@@ -40,7 +40,7 @@ export const LockScreen: React.FC<{
 
   return (
     <div
-      className="lockscreen"
+      className="lockscreen z-10"
       style={{
         backgroundImage: `url(${`imgs/wallpaper/lock.jpg`})`,
       }}
