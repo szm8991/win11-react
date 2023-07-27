@@ -7,9 +7,18 @@
   .taskbar {
     --bg: rgba(32, 32, 32, 0.75);
   }
+}
 
-  .taskIcon,
-  .searchIcon img {
-    filter: invert(1);
+.task-date {
+  display: flex;
+  padding: 0 8px;
+  font-size: 11px;
+  flex-direction: column;
+  justify-content: center;
+
+  div {
+    width: 100%;
+    text-align: center;
+    font-weight: 400;
   }
 }

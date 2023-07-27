@@ -5,3 +5,7 @@
   top: 0;
   overflow: hidden;
 }
+.wrapper {
+  --dark-txt: #fff;
+  color: var(--dark-txt);
+}

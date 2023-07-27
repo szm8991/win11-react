@@ -1,6 +1,6 @@
+import { Battery } from '@/components/Battery';
+import { Icon } from '@/components/Icon';
 import { useEffect, useRef, useState } from 'react';
-import { Battery } from './components/Battery';
-import { Icon } from './components/Icon';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';

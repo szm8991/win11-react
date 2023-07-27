@@ -1,7 +1,7 @@
 import * as Icons from '@/shared/icons';
 export const Icon: React.FC<{
-  width: number;
   src?: string;
+  width?: number;
   invert: boolean;
   icon?: string;
 }> = props => {
