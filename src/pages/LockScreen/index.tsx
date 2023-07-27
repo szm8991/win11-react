@@ -4,10 +4,11 @@ import { Icon } from './components/Icon';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';
-export const LockScreen = () => {
+export const LockScreen: React.FC<{
+  setLock: React.Dispatch<React.SetStateAction<boolean>>;
+}> = props => {
   const [login, setLogin] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const [locked, setLock] = useState(true);
 
   const toggleLogin = () => {
@@ -20,11 +21,22 @@ export const LockScreen = () => {
     }
   };
 
+  const wrapper = useRef<HTMLDivElement>(null);
+  const handler = (e: TransitionEvent) => {
+    if (e.propertyName === 'opacity' && locked === false) {
+      console.log('hidden lockscreen');
+      props.setLock(false);
+    }
+  };
+
   useEffect(() => {
+    const screen = wrapper.current;
+    screen?.addEventListener('transitionend', handler);
     return () => {
       clearInterval(timeoutRef.current!);
+      screen?.removeEventListener('transitionend', handler);
     };
-  }, []);
+  });
 
   return (
     <div
@@ -35,6 +47,7 @@ export const LockScreen = () => {
       onClick={toggleLogin}
       data-blur={login}
       data-unlock={!locked}
+      ref={wrapper}
     >
       <TopTimer login={login} />
       <UserLogin login={login} setLock={setLock} />
