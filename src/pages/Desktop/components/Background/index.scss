@@ -1,0 +1,9 @@
+.background {
+  --url: url('imgs/wallpaper/screen/light.jpg');
+  background-image: var(--url);
+}
+.wrapper[data-theme='dark'] {
+  .background {
+    --url: url('imgs/wallpaper/screen/dark.jpg');
+  }
+}

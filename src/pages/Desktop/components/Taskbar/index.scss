@@ -1,0 +1,15 @@
+.taskbar {
+  --bg: rgba(243, 243, 243, 0.85);
+  background: var(--bg);
+  backdrop-filter: saturate(3) blur(20px);
+}
+.wrapper[data-theme='dark'] {
+  .taskbar {
+    --bg: rgba(32, 32, 32, 0.75);
+  }
+
+  .taskIcon,
+  .searchIcon img {
+    filter: invert(1);
+  }
+}
