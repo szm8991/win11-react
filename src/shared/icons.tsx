@@ -1,4 +1,4 @@
-export const taskSearch: React.FC<NonNullable<unknown>> = props => {
+export const taskSearch: React.FC<{ className: string; style: { width: number } }> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 26 26" height="28" width="28">
       <circle cx="13" cy="11" r="8" fill="#ffffff24"></circle>
@@ -9,7 +9,7 @@ export const taskSearch: React.FC<NonNullable<unknown>> = props => {
     </svg>
   );
 };
-export const upArrow: React.FC<NonNullable<unknown>> = props => {
+export const upArrow: React.FC<{ className: string; style: { width: number } }> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="10" width="10">
       <path

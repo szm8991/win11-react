@@ -1,9 +1,12 @@
 import * as Icons from '@/shared/icons';
+
+type iconType = keyof typeof Icons;
+
 export const Icon: React.FC<{
   src?: string;
   width?: number;
   invert: boolean;
-  icon?: string;
+  icon?: iconType;
 }> = props => {
   if (props.src) {
     const src = `imgs/icon/${props.src}.png`;
@@ -26,7 +29,7 @@ export const Icon: React.FC<{
         <CustomIcon
           className={props.invert ? 'invert' : ''}
           style={{
-            width: props.width,
+            width: props.width!,
           }}
         />
       </div>
