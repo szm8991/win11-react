@@ -25,8 +25,15 @@
   }
 }
 .left:hover,
-.right:hover {
+.right > div:hover {
   background: var(--iconBg);
+}
+.active-transition {
+  transition: 400ms ease-in-out;
+  &:active {
+    transform: scale(0.7);
+    transition: 100ms ease-in-out;
+  }
 }
 .task-icon {
   position: relative;
@@ -35,7 +42,6 @@
   margin: auto;
   background: rgba(254, 254, 254, 0);
   transform-origin: center;
-  transition: 400ms ease-in-out;
   border-radius: 4px;
   &::after {
     content: '';
@@ -54,14 +60,9 @@
     width: 12px;
     background: var(--clrPrm);
   }
-  &:active {
-    transform: scale(0.7);
-    transition: 100ms ease-in-out;
-  }
   &:hover {
     background: var(--iconBg);
   }
-
   &.icon-1 {
     left: 8px;
     position: absolute;

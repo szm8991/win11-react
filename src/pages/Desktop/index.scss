@@ -1,11 +1,10 @@
-.desktop {
-  position: absolute;
-  width: 100vw;
-  height: calc(100vh - 3rem);
-  top: 0;
-  overflow: hidden;
+.wrapper {
+  --bg: rgba(243, 243, 243, 0.85);
+  --iconBg: rgba(255, 255, 255, 0.67);
 }
 .wrapper[data-theme='dark'] {
+  --bg: rgba(32, 32, 32, 0.75);
+  --iconBg: rgba(255, 255, 255, 0.1);
   --dark-txt: #fff;
   --alt-txt: #000;
   --med-dark: #eee;

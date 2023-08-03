@@ -22,23 +22,36 @@ export const Taskbar = () => {
     <>
       <div className="taskbar min-w-full h-12 absolute bottom-0 flex justify-between items-center px-3">
         <div className="center absolute bottom-0 min-w-full flex h-12 justify-center">
-          <Icon width={24} src="widget" invert={false} className="task-icon icon-1" />
-          <Icon width={24} src="home" invert={false} className="task-icon" onClick={handler} />
-          <Icon width={24} src="search" invert className="task-icon" />
-          <Icon width={24} src="settings" invert={false} className="task-icon" />
-          <Icon width={24} src="explorer" invert={false} className="task-icon" />
-          <Icon width={24} src="edge" invert={false} className="task-icon" />
-          <Icon width={24} src="store" invert={false} className="task-icon" />
-          <Icon width={24} src="terminal" invert={false} className="task-icon" />
+          <Icon
+            width={24}
+            src="widget"
+            invert={false}
+            className="task-icon active-transition icon-1"
+          />
+          <Icon
+            width={24}
+            src="home"
+            invert={false}
+            className="task-icon active-transition"
+            onClick={handler}
+          />
+          <Icon width={24} src="search" invert className="task-icon active-transition" />
+          <Icon width={24} src="settings" invert={false} className="task-icon active-transition" />
+          <Icon width={24} src="explorer" invert={false} className="task-icon active-transition" />
+          <Icon width={24} src="edge" invert={false} className="task-icon active-transition" />
+          <Icon width={24} src="store" invert={false} className="task-icon active-transition" />
+          <Icon width={24} src="terminal" invert={false} className="task-icon active-transition" />
         </div>
         <div className="right absolute right-0 flex flex-row">
-          <Icon icon="upArrow" invert={false} />
-          <Icon width={16} src="audio3" invert />
-          <Icon width={16} src="wifi" invert />
-          <div className="mx-1 relative grid place-items-center">
-            <Battery invert />
+          <Icon icon="upArrow" invert={false} className="px-1 active-transition" />
+          <div className="flex flex-row px-1 active-transition">
+            <Icon width={16} src="audio3" invert />
+            <Icon width={16} src="wifi" invert />
+            <div className="mx-1 relative grid place-items-center">
+              <Battery invert />
+            </div>
           </div>
-          <div className="task-date">
+          <div className="task-date px-2 active-transition">
             <div>
               {time.toLocaleTimeString('en-US', {
                 hour: 'numeric',
