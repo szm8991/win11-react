@@ -53,7 +53,7 @@ export const LockScreen: React.FC<{
       <UserLogin login={login} setLock={setLock} />
       <div className="absolute right-6 bottom-6 z-10 flex">
         <Icon src="wifi" width={16} invert />
-        <Battery invert />
+        <Battery invert className="mx-1" />
       </div>
       {/* <div className="absolute right-6 bottom-6 z-10 flex">电量:{battery.current?.level}</div> */}
     </div>
