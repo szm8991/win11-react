@@ -1,0 +1,9 @@
+.uicon img {
+  transform-origin: center;
+  transition: 400ms ease-in-out;
+}
+
+.uicon img:active {
+  transform: scale(0.7);
+  transition: 100ms ease-in-out;
+}
