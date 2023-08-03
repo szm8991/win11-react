@@ -1,11 +1,13 @@
 .taskbar {
   --bg: rgba(243, 243, 243, 0.85);
+  --iconBg: rgba(255, 255, 255, 0.67);
   background: var(--bg);
   backdrop-filter: saturate(3) blur(20px);
 }
 .wrapper[data-theme='dark'] {
   .taskbar {
     --bg: rgba(32, 32, 32, 0.75);
+    --iconBg: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -20,5 +22,49 @@
     width: 100%;
     text-align: center;
     font-weight: 400;
+  }
+}
+.left:hover,
+.right:hover {
+  background: var(--iconBg);
+}
+.task-icon {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  margin: auto;
+  background: rgba(254, 254, 254, 0);
+  transform-origin: center;
+  transition: 400ms ease-in-out;
+  border-radius: 4px;
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    bottom: 0;
+    width: 0px;
+    height: 3px;
+    border-radius: 4px;
+    background: #858585;
+  }
+  &[data-open='true']::after {
+    width: 6px;
+  }
+  &[data-active='true']:after {
+    width: 12px;
+    background: var(--clrPrm);
+  }
+  &:active {
+    transform: scale(0.7);
+    transition: 100ms ease-in-out;
+  }
+  &:hover {
+    background: var(--iconBg);
+  }
+
+  &.icon-1 {
+    left: 8px;
+    position: absolute;
+    margin: 5px auto;
   }
 }

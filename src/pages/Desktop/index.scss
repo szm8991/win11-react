@@ -5,7 +5,20 @@
   top: 0;
   overflow: hidden;
 }
-.wrapper {
+.wrapper[data-theme='dark'] {
   --dark-txt: #fff;
+  --alt-txt: #000;
+  --med-dark: #eee;
+  --txt-col: #ddd;
+  --med-txt: #c3c3c3;
+  --comp-txt: #222;
+  --comp-clr: #191919;
+  --gray-txt: #aaa;
+  --sat-txt: #999;
+  --clrPrm: #4cc2ff;
+  --wintheme: #1e1e26;
+  --txt_clr-rgb: 255 255 255;
+  --base_bg-rgb: 32 32 32;
+  --fakeMica: #202020 radial-gradient(#1a1f35 25%, #202020 100%) no-repeat fixed;
   color: var(--dark-txt);
 }
