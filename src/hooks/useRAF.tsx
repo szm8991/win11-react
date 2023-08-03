@@ -30,6 +30,7 @@ export const useRAF = (callback: (opt: timespanOption) => void, delay: number) =
   useLayoutEffect(() => {
     frameRef.current = requestAnimationFrame(tick);
     return () => {
+      // console.log('destory');
       frameRef.current && cancelAnimationFrame(frameRef.current);
     };
   });
