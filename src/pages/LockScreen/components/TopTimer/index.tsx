@@ -1,4 +1,11 @@
+import { useRAF } from '@/hooks/useRAF';
+import { useState } from 'react';
+
 export const TopTimer: React.FC<{ login: boolean }> = props => {
+  const [time, setTime] = useState(new Date());
+  useRAF(options => {
+    setTime(new Date());
+  }, 1000);
   return (
     <>
       <div
@@ -6,14 +13,14 @@ export const TopTimer: React.FC<{ login: boolean }> = props => {
         data-login={props.login}
       >
         <div className="text-6xl font-semibold text-gray-100">
-          {new Date().toLocaleTimeString('en-US', {
+          {time.toLocaleTimeString('en-US', {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true,
           })}
         </div>
         <div className="text-lg font-medium text-gray-200">
-          {new Date().toLocaleDateString(undefined, {
+          {time.toLocaleDateString(undefined, {
             weekday: 'long',
             month: 'long',
             day: 'numeric',
