@@ -1,10 +1,13 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
+import { useInterval } from '@/hooks/useInterval';
 import { MouseEventHandler, useState } from 'react';
 import './index.scss';
 export const Taskbar = () => {
   const [time, setTime] = useState(new Date());
-
+  useInterval(() => {
+    setTime(new Date());
+  }, 1000);
   const handler: MouseEventHandler<HTMLDivElement> = e => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
