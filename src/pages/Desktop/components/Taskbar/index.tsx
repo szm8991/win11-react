@@ -1,11 +1,14 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
-import { useInterval } from '@/hooks/useInterval';
+import { useRAF } from '@/hooks/useRAF';
 import { MouseEventHandler, useState } from 'react';
 import './index.scss';
 export const Taskbar = () => {
   const [time, setTime] = useState(new Date());
-  useInterval(() => {
+  // useInterval(() => {
+  //   setTime(new Date());
+  // }, 1000);
+  useRAF(options => {
     setTime(new Date());
   }, 1000);
   const handler: MouseEventHandler<HTMLDivElement> = e => {
