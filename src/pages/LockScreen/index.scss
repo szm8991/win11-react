@@ -2,21 +2,33 @@
   position: absolute;
   inset: 0;
   min-height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 500ms ease-in-out;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('imgs/wallpaper/lock.jpg');
+    transition: all 250ms ease-in-out;
+  }
   &[data-unlock='true'] {
     opacity: 0;
   }
 }
 
-.lockscreen[data-blur='true']::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(25px);
-  background: rgba(0, 0, 0, 0.1);
+.lockscreen[data-blur='true'] {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  &::before {
+    scale: 1.1;
+  }
 }

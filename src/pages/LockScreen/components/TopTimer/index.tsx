@@ -9,7 +9,7 @@ export const TopTimer: React.FC<{ login: boolean }> = props => {
   return (
     <>
       <div
-        className="mt-40 flex items-center flex-col transition-all data-[login=true]:opacity-0 data-[login=true]:pointer-events-none data-[login=true]:-translate-y-48"
+        className="z-20 mt-40 flex items-center flex-col transition-all data-[login=true]:opacity-0 data-[login=true]:pointer-events-none data-[login=true]:-translate-y-48"
         data-login={props.login}
       >
         <div className="text-6xl font-semibold text-gray-100">

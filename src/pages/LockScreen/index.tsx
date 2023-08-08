@@ -43,9 +43,6 @@ export const LockScreen: React.FC<NonNullable<unknown>> = props => {
   return (
     <div
       className="lockscreen z-10"
-      style={{
-        backgroundImage: `url(${`imgs/wallpaper/lock.jpg`})`,
-      }}
       onClick={toggleLogin}
       data-blur={login}
       data-unlock={lockBegin}
