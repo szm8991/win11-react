@@ -1,10 +1,12 @@
+import { MouseEventHandler } from 'react';
 import './index.scss';
 export const UserLogin: React.FC<{
   login: boolean;
   setLockBegin: React.Dispatch<React.SetStateAction<boolean>>;
 }> = props => {
-  const proceed = () => {
+  const proceed: MouseEventHandler<HTMLDivElement> = e => {
     props.setLockBegin(true);
+    e.stopPropagation();
   };
   return (
     <div

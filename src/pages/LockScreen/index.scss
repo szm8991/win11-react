@@ -1,3 +1,12 @@
+@keyframes fade-in {
+  from {
+    scale: 1.2;
+  }
+  to {
+    scale: 1;
+  }
+}
+
 .lockscreen {
   position: absolute;
   inset: 0;
@@ -6,6 +15,9 @@
   flex-direction: column;
   align-items: center;
   transition: all 500ms ease-in-out;
+  &[data-fadein='true']::before {
+    animation: fade-in 200ms;
+  }
   &::before {
     content: '';
     position: absolute;
@@ -13,13 +25,12 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-image: url('imgs/wallpaper/lock.jpg');
-    transition: all 250ms ease-in-out;
+    transition: all 200ms ease-in-out;
   }
   &[data-unlock='true'] {
     opacity: 0;
   }
 }
-
 .lockscreen[data-blur='true'] {
   &::after {
     content: '';
@@ -29,6 +40,6 @@
     background: rgba(0, 0, 0, 0.1);
   }
   &::before {
-    scale: 1.1;
+    scale: 1.2;
   }
 }

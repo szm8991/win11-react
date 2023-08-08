@@ -1,30 +1,21 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
-import { useSystemLockState, useUpdateLockState } from '@/stores/useState';
-import { useEffect, useRef, useState } from 'react';
+import { useUpdateLockState } from '@/stores/useState';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';
-export const LockScreen: React.FC<NonNullable<unknown>> = props => {
+export const LockScreen: React.FC<{ fadeIn?: boolean }> = props => {
   const [login, setLogin] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [lockBegin, setLockBegin] = useState(false);
-  const systemLockState = useSystemLockState();
   const updateLockState = useUpdateLockState();
 
-  const toggleLogin = () => {
-    if (login == false) {
-      setLogin(true);
-      // 倒计时30秒后切换回来
-      timeoutRef.current = setTimeout(() => {
-        setLogin(false);
-      }, 30000);
-    }
+  const toggleLogin: MouseEventHandler<HTMLDivElement> = e => {
+    setLogin(!login);
   };
 
   const wrapper = useRef<HTMLDivElement>(null);
   const handler = (e: TransitionEvent) => {
-    console.log(systemLockState, lockBegin);
     if (e.propertyName === 'opacity' && lockBegin === true) {
       console.log('hidden lockscreen');
       updateLockState(false);
@@ -34,8 +25,8 @@ export const LockScreen: React.FC<NonNullable<unknown>> = props => {
   useEffect(() => {
     const screen = wrapper.current;
     screen?.addEventListener('transitionend', handler);
+
     return () => {
-      clearInterval(timeoutRef.current!);
       screen?.removeEventListener('transitionend', handler);
     };
   });
@@ -44,6 +35,7 @@ export const LockScreen: React.FC<NonNullable<unknown>> = props => {
     <div
       className="lockscreen z-10"
       onClick={toggleLogin}
+      data-fadein={props.fadeIn ?? false}
       data-blur={login}
       data-unlock={lockBegin}
       ref={wrapper}
