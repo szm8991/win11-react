@@ -1,10 +1,10 @@
 import './index.scss';
 export const UserLogin: React.FC<{
   login: boolean;
-  setLock: React.Dispatch<React.SetStateAction<boolean>>;
+  setLockBegin: React.Dispatch<React.SetStateAction<boolean>>;
 }> = props => {
   const proceed = () => {
-    props.setLock(false);
+    props.setLockBegin(true);
   };
   return (
     <div

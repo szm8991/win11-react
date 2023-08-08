@@ -1,15 +1,16 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
+import { useSystemLockState, useUpdateLockState } from '@/stores/useState';
 import { useEffect, useRef, useState } from 'react';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';
 import './index.scss';
-export const LockScreen: React.FC<{
-  setLock: React.Dispatch<React.SetStateAction<boolean>>;
-}> = props => {
+export const LockScreen: React.FC<NonNullable<unknown>> = props => {
   const [login, setLogin] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [locked, setLock] = useState(true);
+  const [lockBegin, setLockBegin] = useState(false);
+  const systemLockState = useSystemLockState();
+  const updateLockState = useUpdateLockState();
 
   const toggleLogin = () => {
     if (login == false) {
@@ -23,9 +24,10 @@ export const LockScreen: React.FC<{
 
   const wrapper = useRef<HTMLDivElement>(null);
   const handler = (e: TransitionEvent) => {
-    if (e.propertyName === 'opacity' && locked === false) {
+    console.log(systemLockState, lockBegin);
+    if (e.propertyName === 'opacity' && lockBegin === true) {
       console.log('hidden lockscreen');
-      props.setLock(false);
+      updateLockState(false);
     }
   };
 
@@ -46,11 +48,11 @@ export const LockScreen: React.FC<{
       }}
       onClick={toggleLogin}
       data-blur={login}
-      data-unlock={!locked}
+      data-unlock={lockBegin}
       ref={wrapper}
     >
       <TopTimer login={login} />
-      <UserLogin login={login} setLock={setLock} />
+      <UserLogin login={login} setLockBegin={setLockBegin} />
       <div className="absolute right-6 bottom-6 z-10 flex">
         <Icon src="wifi" width={16} invert />
         <Battery invert className="mx-1" />

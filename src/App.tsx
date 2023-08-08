@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { Desktop } from './pages/Desktop';
 import { LockScreen } from './pages/LockScreen';
+import { useSystemLockState } from './stores/useState';
 function App() {
-  const [lock, setLock] = useState(true);
+  const systemLockState = useSystemLockState();
   return (
     <div className="app">
-      {lock ? <LockScreen setLock={setLock} /> : null}
+      {systemLockState ? <LockScreen /> : null}
       <Desktop />
     </div>
   );
