@@ -6,15 +6,16 @@ import { initialState } from './state';
 export type Store = State & Action;
 export const useStore = create<Store>()(
   persist(
-    (set, get) => ({
+    set => ({
       ...initialState,
       updateLockState: isLock =>
-        set({
+        set(state => ({
+          ...state,
           locked: isLock,
-        }),
+        })),
     }),
     {
-      name: 'app-storage',
+      name: 'lock-storage',
     }
   )
 );

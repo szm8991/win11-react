@@ -1,6 +1,6 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
-import { useUpdateLockState } from '@/stores/useState';
+import { useUpdateLockState } from '@/stores/lockState/useState';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { TopTimer } from './components/TopTimer';
 import { UserLogin } from './components/UserLogin';

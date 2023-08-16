@@ -1,10 +1,12 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
 import { useRAF } from '@/hooks/useRAF';
+import { useUpdateState } from '@/stores/appState/useState';
 import { MouseEventHandler, useState } from 'react';
 import './index.scss';
 export const Taskbar = () => {
   const [time, setTime] = useState(new Date());
+  const updater = useUpdateState();
   // useInterval(() => {
   //   setTime(new Date());
   // }, 1000);
@@ -16,6 +18,7 @@ export const Taskbar = () => {
       return;
     }
     e.currentTarget.dataset.open = 'true';
+    updater('edge');
     // e.target.dataset.active = true;
   };
   return (
@@ -38,7 +41,14 @@ export const Taskbar = () => {
           <Icon width={24} src="search" invert className="task-icon active-transition" />
           <Icon width={24} src="settings" invert={false} className="task-icon active-transition" />
           <Icon width={24} src="explorer" invert={false} className="task-icon active-transition" />
-          <Icon width={24} src="edge" invert={false} className="task-icon active-transition" />
+          <Icon
+            width={24}
+            src="edge"
+            invert={false}
+            data-action="edge"
+            className="task-icon active-transition"
+            onClick={handler}
+          />
           <Icon width={24} src="store" invert={false} className="task-icon active-transition" />
           <Icon width={24} src="terminal" invert={false} className="task-icon active-transition" />
         </div>

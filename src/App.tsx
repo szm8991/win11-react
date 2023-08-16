@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Desktop } from './pages/Desktop';
 import { LockScreen } from './pages/LockScreen';
-import { useSystemLockState, useUpdateLockState } from './stores/useState';
+import { useSystemLockState, useUpdateLockState } from './stores/lockState/useState';
 function App() {
   const systemLockState = useSystemLockState();
   const updateLockState = useUpdateLockState();
