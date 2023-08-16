@@ -1,4 +1,3 @@
-/// <reference types="./type.d.ts" />
 interface BatteryManager extends BatteryManagerEventTarget {
   readonly charging: boolean;
   readonly chargingTime: number;
