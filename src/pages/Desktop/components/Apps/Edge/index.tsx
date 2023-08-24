@@ -14,6 +14,7 @@ export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: nu
     >
       <Toolbar size={props.size} />
       <Addressbar url={url} />
+      <Bookmarkbar />
       <LazyComponent show={!props.hidden}>
         <iframe src={url} id="isite" className="w-full h-full border-0" title="site"></iframe>
       </LazyComponent>
@@ -60,13 +61,53 @@ const Addressbar: React.FC<{ url: string }> = props => {
       <Icon icon="Home" invert className="px-1 h-full" />
       <div className="addCont relative flex items-center">
         <input
-          className="w-full h-6 px-4"
+          className="text-[14px] w-full h-6 px-4"
           placeholder="Type url or a query to search"
           type="text"
           value={props.url}
           onChange={typing}
         />
         <Icon src="google" width={14} invert={false} />
+      </div>
+    </div>
+  );
+};
+
+const Bookmarkbar: React.FC<NonNullable<unknown>> = props => {
+  const iframes: Record<string, string> = {
+    'https://www.google.com/webhp?igu=1': 'Google',
+    'https://bing.com': 'Bing',
+    'https://www.youtube.com/embed/m0EHSoZzHEA': 'Youtube',
+    'https://blueedge.me': 'blueedge',
+    'https://andrewstech.me': '\nandrewstech',
+    'https://blueedge.me/unescape': 'Unescape',
+    'https://win11.blueedge.me': 'Inception',
+    'https://open.spotify.com/embed/user/jhfivkgdtg4s97pwbo1rbvr9v/playlist/6IdR78TOog83PV4XhLDvWN':
+      'Spotify',
+    'https://bluelab.blueedge.me': 'BlueLab',
+    'https://othello.blueedge.me': 'Othello',
+  };
+  const favicons: Record<string, string> = {
+    'https://andrewstech.me': 'https://avatars.githubusercontent.com/u/45342431',
+  };
+  return (
+    <div className="w-full bookbar py-2">
+      <div className="flex">
+        {Object.keys(iframes).map((mark, i) => {
+          return (
+            <div key={i} className="flex handcr items-center ml-2 mr-1 prtclk">
+              <Icon
+                className="mr-1"
+                width={16}
+                invert={false}
+                src={
+                  iframes[mark][0] != '\n' ? new URL(mark).origin + '/favicon.ico' : favicons[mark]
+                }
+              />
+              <div className="text-xs">{iframes[mark].trim()}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -11,7 +11,10 @@ export const Icon: React.FC<{
   onClick?: MouseEventHandler<HTMLDivElement>;
 }> = props => {
   if (props.src) {
-    const src = `imgs/icon/${props.src}.png`;
+    let src = `imgs/icon/${props.src}.png`;
+    if (props.src.includes('http')) {
+      src = props.src;
+    }
     return (
       <div
         className={`${props.className ?? ''} uicon mx-1 relative grid place-items-center `}
