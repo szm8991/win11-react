@@ -4,10 +4,14 @@
   --ipbar: #fefefe;
   --shd: rgba(80, 80, 80, 0.2);
   background: var(--bg0);
+  transition: 0.25s;
   &[data-hidden='true'] {
-    display: none;
+    transform-origin: bottom;
+    transform: scale(0.6);
+    opacity: 0;
   }
 }
+
 .toolbar {
   display: flex;
   flex-shrink: 0;
@@ -23,4 +27,23 @@
   --ipbar: #222228;
   --bg1: rgb(45, 45, 51);
   --shd: rgba(0, 0, 0, 0.3);
+}
+
+.addressBar {
+  background: var(--bg1);
+}
+
+.addCont {
+  width: 80%;
+
+  input {
+    box-sizing: border-box;
+    background: var(--ipbar);
+    color: var(--txt-col);
+    border-radius: 4px;
+    border: solid 1px var(--comp-txt);
+    &:focus {
+      outline: none;
+    }
+  }
 }

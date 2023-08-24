@@ -1,8 +1,10 @@
 import { Icon } from '@/components/Icon';
-import { useEffect, useState } from 'react';
+import { LazyComponent } from '@/shared/lazy';
+import { useState } from 'react';
 import './index.scss';
 
 export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: number }> = props => {
+  const [url, setUrl] = useState('https://www.google.com/?igu=1');
   return (
     <div
       className="floatApp edgeBrowser"
@@ -10,38 +12,53 @@ export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: nu
       style={{ zIndex: props.zIndex }}
       data-hidden={props.hidden}
     >
-      <div className="toolbar">
-        <div className="flex flex-grow items-center">123</div>
-        <div className="flex items-center h-full">
-          <Icon src="minimize" invert width={12} className="px-4 h-full"></Icon>
-          <Icon
-            src={props.size == 'full' ? 'maximize' : 'maxmin'}
-            invert
-            width={12}
-            className="px-4 h-full"
-          ></Icon>
-          <Icon src="close" invert width={12} className="px-4 h-full"></Icon>
-        </div>
-      </div>
-      <div className="addressBar w-full h-10 flex items-center"></div>
-      <iframe
-        src={'https://www.google.com/webhp?igu=1'}
-        id="isite"
-        className="w-full h-full border-0"
-        title="site"
-      ></iframe>
+      <Toolbar size={props.size} />
+      <Addressbar url={url} />
+      <LazyComponent show={!props.hidden}>
+        <iframe src={url} id="isite" className="w-full h-full border-0" title="site"></iframe>
+      </LazyComponent>
     </div>
   );
 };
-export const LazyComponent: React.FC<{ show: boolean; children: React.FC }> = ({
-  show,
-  children,
-}) => {
-  const [loaded, setLoad] = useState(false);
 
-  useEffect(() => {
-    if (show && !loaded) setLoad(true);
-  }, [show, loaded]);
+const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
+  return (
+    <div className="toolbar">
+      <div className="flex flex-grow items-center">123</div>
+      <div className="flex items-center h-full">
+        <Icon src="minimize" invert width={12} className="px-4 h-full"></Icon>
+        <Icon
+          src={props.size == 'full' ? 'maximize' : 'maxmin'}
+          invert
+          width={12}
+          className="px-4 h-full"
+        ></Icon>
+        <Icon src="close" invert width={12} className="px-4 h-full"></Icon>
+      </div>
+    </div>
+  );
+};
 
-  return show || loaded ? <>{children}</> : null;
+const Addressbar: React.FC<{ url: string }> = props => {
+  const typing: React.ChangeEventHandler<HTMLInputElement> = e => {
+    console.log(e.target.value);
+  };
+  return (
+    <div className="addressBar w-full h-10 flex items-center">
+      <Icon src="left" width={14} invert className="px-1 h-full" />
+      <Icon src="right" width={14} invert className="px-1 h-full" />
+      <Icon src="refresh" width={14} invert className="px-1 h-full" />
+      <Icon icon="Home" invert className="px-1 h-full" />
+      <div className="addCont relative flex items-center">
+        <input
+          className="w-full h-6 px-4"
+          placeholder="Type url or a query to search"
+          type="text"
+          value={props.url}
+          onChange={typing}
+        />
+        <Icon src="google" width={14} invert={false} />
+      </div>
+    </div>
+  );
 };

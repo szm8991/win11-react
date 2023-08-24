@@ -30,7 +30,6 @@ export const LockScreen: React.FC<{ fadeIn?: boolean }> = props => {
       screen?.removeEventListener('transitionend', handler);
     };
   });
-
   return (
     <div
       className="lockscreen z-10"
