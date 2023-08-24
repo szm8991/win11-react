@@ -47,3 +47,24 @@
     }
   }
 }
+
+.overTool {
+  position: absolute;
+  top: 0;
+  width: auto;
+
+  .btab {
+    width: 176px;
+    height: 100%;
+    margin: 0 4px;
+    background: var(--bg1);
+    color: var(--txt-col);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 2px 0 2px var(--shd);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 0.72em;
+  }
+}
