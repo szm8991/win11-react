@@ -1,7 +1,8 @@
 import { Icon } from '@/components/Icon';
-import { useAppState } from '@/stores/appState/useState';
-import { Edge } from './Edge';
+import { useAppStates } from '@/stores/appState/useState';
+import * as Applications from './apps';
 import './index.scss';
+type AppsType = keyof typeof Applications;
 export const Apps: React.FC<NonNullable<unknown>> = () => {
   const apps = [
     {
@@ -19,7 +20,7 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
       },
     },
   ];
-  const { hidden } = useAppState('edge');
+  const appState = useAppStates();
   return (
     <div className="desktop">
       <div className="apps">
@@ -32,7 +33,12 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
           );
         })}
       </div>
-      <Edge hidden={hidden} size="full" zIndex={1} />
+      {Object.keys(Applications).map((key, idx) => {
+        const WinApp = Applications[key as AppsType];
+        return (
+          <WinApp hidden={appState[key as AppsType].hidden} size="full" key={idx} zIndex={1} />
+        );
+      })}
     </div>
   );
 };
