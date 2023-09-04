@@ -8,7 +8,6 @@ export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: nu
   return (
     <div
       className="floatApp edgeBrowser"
-      id="edgeApp"
       style={{ zIndex: props.zIndex }}
       data-hidden={props.hidden}
     >

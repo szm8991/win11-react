@@ -6,7 +6,7 @@ export const LazyComponent: React.FC<{ show: boolean; children: unknown }> = ({
 }) => {
   const [loaded, setLoad] = useState(false);
 
-  console.log(show);
+  // console.log(show);
 
   useEffect(() => {
     if (show && !loaded) setLoad(true);
