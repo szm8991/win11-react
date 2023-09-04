@@ -50,7 +50,7 @@ export const Taskbar = () => {
             src="edge"
             invert={false}
             className="task-icon active-transition"
-            action="edge"
+            action="Edge"
             onClick={handler}
           />
           <Icon width={24} src="store" invert={false} className="task-icon active-transition" />
@@ -59,7 +59,7 @@ export const Taskbar = () => {
             src="terminal"
             invert={false}
             className="task-icon active-transition"
-            action="terminal"
+            action="Terminal"
             onClick={handler}
           />
         </div>
