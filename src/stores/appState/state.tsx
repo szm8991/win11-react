@@ -1,16 +1,16 @@
 type Props = {
   hidden: boolean;
 };
-export type App = 'edge' | 'explorer';
+export type Apps = 'Edge' | 'Terminal';
 type AppState<T extends string> = {
   [K in T]: Props;
 };
-export type State = AppState<App>;
+export type State = AppState<Apps>;
 export const initialState: State = {
-  edge: {
+  Edge: {
     hidden: true,
   },
-  explorer: {
+  Terminal: {
     hidden: true,
   },
 };

@@ -1,4 +1,4 @@
-import type { App } from './state';
+import type { Apps } from './state';
 export type Action = {
-  toggleApp: (appName: App) => void;
+  toggleApp: (appName: Apps) => void;
 };
