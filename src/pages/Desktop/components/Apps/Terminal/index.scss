@@ -1,0 +1,7 @@
+.winTerminal {
+  &[data-hidden='true'] {
+    transform-origin: bottom;
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
