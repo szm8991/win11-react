@@ -1,6 +1,7 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
 import { useRAF } from '@/hooks/useRAF';
+import { Apps } from '@/stores/appState/state';
 import { useUpdateState } from '@/stores/appState/useState';
 import { MouseEventHandler, useState } from 'react';
 import './index.scss';
@@ -17,8 +18,11 @@ export const Taskbar = () => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
     }
+    // 第一次点击时,open设置为true
+    // 每次点击切换active状态
     e.currentTarget.dataset.open = 'true';
-    updater('edge');
+    e.currentTarget.dataset.active = 'true';
+    updater(e.currentTarget.dataset.action! as Apps);
     // e.target.dataset.active = true;
   };
   return (
@@ -45,12 +49,19 @@ export const Taskbar = () => {
             width={24}
             src="edge"
             invert={false}
-            data-action="edge"
             className="task-icon active-transition"
+            action="edge"
             onClick={handler}
           />
           <Icon width={24} src="store" invert={false} className="task-icon active-transition" />
-          <Icon width={24} src="terminal" invert={false} className="task-icon active-transition" />
+          <Icon
+            width={24}
+            src="terminal"
+            invert={false}
+            className="task-icon active-transition"
+            action="terminal"
+            onClick={handler}
+          />
         </div>
         <div className="right absolute right-0 flex flex-row">
           <Icon icon="upArrow" invert={false} className="px-1 active-transition" />
