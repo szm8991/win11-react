@@ -1,0 +1,9 @@
+.s-icon {
+  transition: all ease-in-out 100ms;
+  &:hover {
+    background: rgba(136, 136, 136, 0.2);
+  }
+  &:active {
+    transform: scale(0.7);
+  }
+}
