@@ -17,6 +17,8 @@ export const useStore = create<Store>()(set => ({
       [app]: {
         ...state[app],
         open: !state[app].open,
+        active: !state[app].active,
+        hidden: !state[app].hidden,
       },
     })),
   toggleAppActive: app =>

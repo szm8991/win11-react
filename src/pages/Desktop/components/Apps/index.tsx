@@ -26,7 +26,7 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
     }
-    updater((e.currentTarget.children[0] as HTMLDivElement).dataset.action! as AppType);
+    updater((e.currentTarget.children[0] as HTMLDivElement).dataset.action as AppType);
   };
   return (
     <div className="desktop">

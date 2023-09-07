@@ -1,5 +1,6 @@
 import { Icon } from '@/components/Icon';
 import { LazyComponent } from '@/shared/lazy';
+import { useUpdateActive, useUpdateOpen } from '@/stores/appState/useState';
 import { useState } from 'react';
 import './index.scss';
 
@@ -22,6 +23,8 @@ export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: nu
 };
 
 const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
+  const activeUpdater = useUpdateActive();
+  const openUpdater = useUpdateOpen();
   return (
     <>
       <div className="overTool flex h-[26px]">
@@ -34,14 +37,26 @@ const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
       <div className="toolbar">
         <div className="flex flex-grow items-center h-full"></div>
         <div className="flex items-center h-full">
-          <Icon src="minimize" invert width={12} className="px-4 h-full"></Icon>
+          <Icon
+            src="minimize"
+            invert
+            width={12}
+            className="px-4 h-full"
+            onClick={() => activeUpdater('Edge')}
+          ></Icon>
           <Icon
             src={props.size == 'full' ? 'maximize' : 'maxmin'}
             invert
             width={12}
             className="px-4 h-full"
           ></Icon>
-          <Icon src="close" invert width={12} className="px-4 h-full"></Icon>
+          <Icon
+            src="close"
+            invert
+            width={12}
+            className="px-4 h-full"
+            onClick={() => openUpdater('Edge')}
+          ></Icon>
         </div>
       </div>
     </>
