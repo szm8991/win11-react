@@ -1,4 +1,6 @@
 import type { Apps } from './state';
 export type Action = {
-  toggleApp: (appName: Apps) => void;
+  toggleAppHidden: (appName: Apps) => void;
+  toggleAppOpen: (appName: Apps) => void;
+  toggleAppActive: (appName: Apps) => void;
 };

@@ -1,34 +1,41 @@
 import { Icon } from '@/components/Icon';
-import { useAppStates } from '@/stores/appState/useState';
+import { type Apps as AppType } from '@/stores/appState/state';
+import { useAppStates, useUpdateActive } from '@/stores/appState/useState';
+import { MouseEventHandler } from 'react';
 import * as Applications from './apps';
 import './index.scss';
 type AppsType = keyof typeof Applications;
+const desktopApps = [
+  {
+    app: 'System',
+    src: 'win/user',
+  },
+  {
+    app: 'Edge',
+    src: 'edge',
+  },
+  {
+    app: 'Terminal',
+    src: 'terminal',
+  },
+];
 export const Apps: React.FC<NonNullable<unknown>> = () => {
-  const apps = [
-    {
-      appName: 'Blue',
-      appIcon: 'win/user',
-      clickAction: () => {
-        console.log('blue');
-      },
-    },
-    {
-      appName: 'Browser',
-      appIcon: 'edge',
-      clickAction: () => {
-        console.log('edge');
-      },
-    },
-  ];
   const appState = useAppStates();
+  const updater = useUpdateActive();
+  const handler: MouseEventHandler<HTMLDivElement> = e => {
+    if (!(e.currentTarget instanceof HTMLDivElement)) {
+      return;
+    }
+    updater((e.currentTarget.children[0] as HTMLDivElement).dataset.action! as AppType);
+  };
   return (
     <div className="desktop">
       <div className="apps">
-        {apps.map(({ appName, appIcon, clickAction }) => {
+        {desktopApps.map(({ app, src }) => {
           return (
-            <div className="app-item" tabIndex={0} key={appName} onDoubleClick={clickAction}>
-              <Icon invert={false} width={36} src={appIcon} />
-              <div className="app-name">{appName}</div>
+            <div className="app-item" tabIndex={0} key={app} onDoubleClick={handler}>
+              <Icon invert={false} width={36} src={src} action={app} />
+              <div className="app-name">{app}</div>
             </div>
           );
         })}

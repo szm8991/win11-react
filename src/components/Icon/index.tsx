@@ -9,6 +9,8 @@ export const Icon: React.FC<{
   icon?: iconType;
   className?: string;
   action?: string;
+  open?: boolean;
+  active?: boolean;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }> = props => {
   if (props.src) {
@@ -21,6 +23,8 @@ export const Icon: React.FC<{
         className={`${props.className ?? ''} uicon mx-1 relative grid place-items-center `}
         onClick={props.onClick ?? undefined}
         data-action={props.action}
+        data-open={props.open}
+        data-active={props.active}
       >
         <img
           className={props.invert ? 'invert' : ''}

@@ -1,13 +1,47 @@
 import { Battery } from '@/components/Battery';
 import { Icon } from '@/components/Icon';
 import { useRAF } from '@/hooks/useRAF';
-import { Apps } from '@/stores/appState/state';
-import { useUpdateState } from '@/stores/appState/useState';
+import { type Apps } from '@/stores/appState/state';
+import { useAppStates, useUpdateActive } from '@/stores/appState/useState';
 import { MouseEventHandler, useState } from 'react';
 import './index.scss';
+const taskbarApps = [
+  {
+    src: 'home',
+    invert: false,
+  },
+  {
+    src: 'search',
+    invert: true,
+  },
+  {
+    src: 'settings',
+    invert: false,
+  },
+  {
+    src: 'explorer',
+    invert: false,
+  },
+  {
+    app: 'Edge',
+    src: 'edge',
+    invert: false,
+  },
+  {
+    src: 'store',
+    invert: false,
+  },
+  {
+    app: 'Terminal',
+    src: 'terminal',
+    invert: false,
+  },
+];
 export const Taskbar = () => {
   const [time, setTime] = useState(new Date());
-  const updater = useUpdateState();
+  const updater = useUpdateActive();
+  const appState = useAppStates();
+
   // useInterval(() => {
   //   setTime(new Date());
   // }, 1000);
@@ -18,12 +52,7 @@ export const Taskbar = () => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
     }
-    // 第一次点击时,open设置为true
-    // 每次点击切换active状态
-    e.currentTarget.dataset.open = 'true';
-    e.currentTarget.dataset.active = 'true';
     updater(e.currentTarget.dataset.action! as Apps);
-    // e.target.dataset.active = true;
   };
   return (
     <>
@@ -35,33 +64,21 @@ export const Taskbar = () => {
             invert={false}
             className="task-icon active-transition icon-1"
           />
-          <Icon
-            width={24}
-            src="home"
-            invert={false}
-            className="task-icon active-transition"
-            onClick={handler}
-          />
-          <Icon width={24} src="search" invert className="task-icon active-transition" />
-          <Icon width={24} src="settings" invert={false} className="task-icon active-transition" />
-          <Icon width={24} src="explorer" invert={false} className="task-icon active-transition" />
-          <Icon
-            width={24}
-            src="edge"
-            invert={false}
-            className="task-icon active-transition"
-            action="Edge"
-            onClick={handler}
-          />
-          <Icon width={24} src="store" invert={false} className="task-icon active-transition" />
-          <Icon
-            width={24}
-            src="terminal"
-            invert={false}
-            className="task-icon active-transition"
-            action="Terminal"
-            onClick={handler}
-          />
+          {taskbarApps.map(({ app, src, invert }, index) => {
+            return (
+              <Icon
+                key={index}
+                width={24}
+                src={src}
+                invert={invert}
+                className="task-icon active-transition"
+                action={app}
+                open={appState[app as Apps]?.open}
+                active={appState[app as Apps]?.active}
+                onClick={handler}
+              />
+            );
+          })}
         </div>
         <div className="right absolute right-0 flex flex-row">
           <Icon icon="upArrow" invert={false} className="px-1 active-transition" />
