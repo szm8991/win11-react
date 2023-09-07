@@ -6,7 +6,7 @@ function App() {
   const systemLockState = useSystemLockState();
   const updateLockState = useUpdateLockState();
   const eventLock = useRef<boolean>(false);
-  const hanlder = (e: KeyboardEvent) => {
+  const handler = (e: KeyboardEvent) => {
     if (e.shiftKey && e.code == 'KeyL') {
       if (systemLockState === false) {
         updateLockState(true);
@@ -15,9 +15,9 @@ function App() {
     }
   };
   useEffect(() => {
-    document.addEventListener('keyup', hanlder);
+    document.addEventListener('keyup', handler);
     return () => {
-      document.removeEventListener('keyup', hanlder);
+      document.removeEventListener('keyup', handler);
     };
   });
   return (
