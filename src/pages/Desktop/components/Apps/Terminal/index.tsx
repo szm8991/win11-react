@@ -1,12 +1,12 @@
 import { useDebounce } from '@/hooks/useDebounce';
+import { useAppState } from '@/stores/appState/useState';
 import { useEffect, useState } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import './index.scss';
 export const Terminal: React.FC<{
-  hidden: boolean;
-  size: 'full' | 'mini';
   zIndex: number;
 }> = props => {
+  const appState = useAppState('Terminal');
   const [content, setContent] = useState<string>('');
   // const commandRef = useRef<HTMLInputElement>(null);
   const keyHandler = useDebounce((e: KeyboardEvent) => {
@@ -33,9 +33,10 @@ export const Terminal: React.FC<{
     <div
       className="floatApp winTerminal"
       style={{ zIndex: props.zIndex }}
-      data-hidden={props.hidden}
+      data-hidden={appState.hidden}
+      data-size={appState.size}
     >
-      <Toolbar />
+      <Toolbar size={appState.size} />
       <div
         className="flex flex-col p-4 pr-[5px] h-full text-white bg-[#1C1C1E]/95 rounded-lg"
         style={{ fontFamily: 'Menlo, monospace', fontSize: '14px' }}
@@ -52,15 +53,15 @@ export const Terminal: React.FC<{
     </div>
   );
 };
-const Toolbar: React.FC<NonNullable<unknown>> = props => {
+const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
   return (
-    <div className="absolute w-full top-2 bg-transparent">
+    <div className="absolute w-full top-2 bg-transparent h-6">
       <div className="absolute w-auto flex space-x-2 ml-1 ">
         <div className="bg-red-500 w-[13px] h-[13px] mt-2 rounded-full ml-1"> </div>
         <div className="bg-yellow-500 w-[13px] h-[13px] mt-2 rounded-full "></div>
         <div className="bg-green-500 w-[13px] h-[13px] mt-2 rounded-full "></div>
       </div>
-      <Sizebar controllApp="Terminal" size="full" className="mt-2 h-full" />
+      <Sizebar controllApp="Terminal" size={props.size} className="mt-2 h-full" />
     </div>
   );
 };

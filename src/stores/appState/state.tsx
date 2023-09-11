@@ -2,6 +2,7 @@ type Props = {
   hidden: boolean;
   open: boolean;
   active: boolean;
+  size: 'full' | 'mini';
 };
 export type Apps = 'Edge' | 'Terminal';
 type AppState<T extends string> = {
@@ -13,10 +14,12 @@ export const initialState: State = {
     hidden: true,
     open: false,
     active: false,
+    size: 'full',
   },
   Terminal: {
     hidden: true,
     open: false,
     active: false,
+    size: 'full',
   },
 };

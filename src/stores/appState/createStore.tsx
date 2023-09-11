@@ -30,4 +30,11 @@ export const useStore = create<Store>()(set => ({
         hidden: !state[app].hidden,
       },
     })),
+  toggleAppSize: app =>
+    set(state => ({
+      [app]: {
+        ...state[app],
+        size: state[app].size === 'full' ? 'mini' : 'full',
+      },
+    })),
 }));

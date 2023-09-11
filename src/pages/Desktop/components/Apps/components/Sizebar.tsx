@@ -1,6 +1,6 @@
 import { Icon } from '@/components/Icon';
 import { type Apps } from '@/stores/appState/state';
-import { useUpdateActive, useUpdateOpen } from '@/stores/appState/useState';
+import { useUpdateActive, useUpdateOpen, useUpdateSize } from '@/stores/appState/useState';
 import './Sizebar.scss';
 export const Sizebar: React.FC<{
   controllApp: Apps;
@@ -9,6 +9,8 @@ export const Sizebar: React.FC<{
 }> = props => {
   const activeUpdater = useUpdateActive();
   const openUpdater = useUpdateOpen();
+  const sizeUpdater = useUpdateSize();
+  console.log(props.size);
   return (
     <>
       <div
@@ -30,6 +32,7 @@ export const Sizebar: React.FC<{
             invert
             width={12}
             className="px-4 h-full s-icon"
+            onClick={() => sizeUpdater(props.controllApp)}
           ></Icon>
           <Icon
             src="close"

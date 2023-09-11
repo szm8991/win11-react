@@ -1,21 +1,24 @@
 import { Icon } from '@/components/Icon';
 import { LazyComponent } from '@/shared/lazy';
+import { useAppState } from '@/stores/appState/useState';
 import { useState } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import './index.scss';
 
-export const Edge: React.FC<{ hidden: boolean; size: 'full' | 'mini'; zIndex: number }> = props => {
+export const Edge: React.FC<{ zIndex: number }> = props => {
+  const appState = useAppState('Edge');
   const [url, setUrl] = useState('https://www.google.com/?igu=1');
   return (
     <div
       className="floatApp edgeBrowser"
       style={{ zIndex: props.zIndex }}
-      data-hidden={props.hidden}
+      data-hidden={appState.hidden}
+      data-size={appState.size}
     >
-      <Toolbar size={props.size} />
+      <Toolbar size={appState.size} />
       <Addressbar url={url} />
       <Bookmarkbar />
-      <LazyComponent show={!props.hidden}>
+      <LazyComponent show={!appState.hidden}>
         <iframe src={url} id="isite" className="w-full h-full border-0" title="site"></iframe>
       </LazyComponent>
     </div>
@@ -32,7 +35,7 @@ const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
           <Icon src="close" invert width={12} className="h-full"></Icon>
         </div>
       </div>
-      <Sizebar controllApp="Edge" size="full" />
+      <Sizebar controllApp="Edge" size={props.size} />
     </>
   );
 };
