@@ -10,7 +10,7 @@ export const Sizebar: React.FC<{
   const activeUpdater = useUpdateActive();
   const openUpdater = useUpdateOpen();
   const sizeUpdater = useUpdateSize();
-  console.log(props.size);
+  // console.log(props.size);
   return (
     <>
       <div

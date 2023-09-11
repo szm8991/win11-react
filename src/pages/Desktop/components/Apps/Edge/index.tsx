@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import './index.scss';
 
-export const Edge: React.FC<{ zIndex: number }> = props => {
+export const Edge: React.FC<NonNullable<unknown>> = props => {
   const appState = useAppState('Edge');
   const [url, setUrl] = useState('https://www.google.com/?igu=1');
   return (
     <div
       className="floatApp edgeBrowser"
-      style={{ zIndex: props.zIndex }}
+      style={{ zIndex: appState.zIndex }}
       data-hidden={appState.hidden}
       data-size={appState.size}
     >

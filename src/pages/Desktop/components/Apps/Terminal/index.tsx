@@ -3,9 +3,7 @@ import { useAppState } from '@/stores/appState/useState';
 import { useEffect, useState } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import './index.scss';
-export const Terminal: React.FC<{
-  zIndex: number;
-}> = props => {
+export const Terminal: React.FC<NonNullable<unknown>> = props => {
   const appState = useAppState('Terminal');
   const [content, setContent] = useState<string>('');
   // const commandRef = useRef<HTMLInputElement>(null);
@@ -23,16 +21,16 @@ export const Terminal: React.FC<{
   }, 16);
   useEffect(() => {
     document.addEventListener('keypress', keyHandler);
-    // document.addEventListener('keydown', controlHandler);
+    document.addEventListener('keydown', controlHandler);
     return () => {
       document.removeEventListener('keypress', keyHandler);
-      // document.removeEventListener('keydown', controlHandler);
+      document.removeEventListener('keydown', controlHandler);
     };
   });
   return (
     <div
       className="floatApp winTerminal"
-      style={{ zIndex: props.zIndex }}
+      style={{ zIndex: appState.zIndex }}
       data-hidden={appState.hidden}
       data-size={appState.size}
     >

@@ -17,7 +17,7 @@ export const LockScreen: React.FC<{ fadeIn?: boolean }> = props => {
   const wrapper = useRef<HTMLDivElement>(null);
   const handler = (e: TransitionEvent) => {
     if (e.propertyName === 'opacity' && lockBegin === true) {
-      console.log('hidden lockscreen');
+      // console.log('hidden lockscreen');
       updateLockState(false);
     }
   };

@@ -41,7 +41,7 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
       </div>
       {Object.keys(Applications).map((key, idx) => {
         const WinApp = Applications[key as AppsType];
-        return <WinApp key={idx} zIndex={1} />;
+        return <WinApp key={idx} />;
       })}
     </div>
   );
