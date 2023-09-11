@@ -1,16 +1,21 @@
-function debounce(fn: (...args: unknown[]) => unknown, ms: number) {
+function debounce(fn: (...args: unknown[]) => unknown, delay: number, immediate = false) {
   let timer: number | null;
-  return function (...args: unknown[]) {
-    if (timer) {
-      clearTimeout(timer);
-    }
+  let lastArgs: unknown = null;
+  return function (this: unknown, ...args: unknown[]) {
+    if (!timer && immediate) {
+      fn.apply(this, args);
+      immediate = false;
+      return;
+    } else lastArgs = args;
+    timer && clearTimeout(timer);
     timer = window.setTimeout(() => {
-      fn(...args);
+      fn.apply(this, args);
+      lastArgs = null;
       timer = null;
-    }, ms);
+    }, delay);
   };
 }
 
-export function useDebounce(fn: (...args: unknown[]) => unknown, time: number) {
+export function useDebounce(fn: (...args: any[]) => unknown, time: number) {
   return debounce(fn, time);
 }
