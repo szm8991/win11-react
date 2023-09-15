@@ -1,6 +1,6 @@
 import { Icon } from '@/components/Icon';
 import { type Apps as AppType } from '@/stores/appState/state';
-import { useUpdateActive } from '@/stores/appState/useState';
+import { useAppStates, useUpdateActive } from '@/stores/appState/useState';
 import { MouseEventHandler } from 'react';
 import * as Applications from './apps';
 import './index.scss';
@@ -21,6 +21,7 @@ const desktopApps = [
 ];
 export const Apps: React.FC<NonNullable<unknown>> = () => {
   const updater = useUpdateActive();
+  const appStates = useAppStates();
   const handler: MouseEventHandler<HTMLDivElement> = e => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
@@ -41,7 +42,7 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
       </div>
       {Object.keys(Applications).map((key, idx) => {
         const WinApp = Applications[key as AppsType];
-        return <WinApp key={idx} />;
+        return appStates[key as AppsType].open ? <WinApp key={idx} /> : null;
       })}
     </div>
   );
