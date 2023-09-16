@@ -30,7 +30,7 @@ export const Apps: React.FC<NonNullable<unknown>> = () => {
   };
   return (
     <div className="desktop">
-      <div className="apps">
+      <div className="app-list">
         {desktopApps.map(({ app, src }) => {
           return (
             <div className="app-item" tabIndex={0} key={app} onDoubleClick={handler}>

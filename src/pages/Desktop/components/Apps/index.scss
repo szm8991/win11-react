@@ -5,7 +5,7 @@
   top: 0;
   overflow: hidden;
 }
-.apps {
+.app-list {
   width: 0;
   height: 100%;
   display: flex;
@@ -30,7 +30,9 @@
     background: rgba(255, 255, 255, 0.24);
     border: 1px dotted white;
   }
-
+  &:active {
+    transform: scale(0.7);
+  }
   .appName {
     text-align: center;
     color: #fafafa;
