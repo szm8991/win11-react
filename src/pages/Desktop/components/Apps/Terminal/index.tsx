@@ -1,32 +1,27 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import { useAppState } from '@/stores/appState/useState';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Sizebar } from '../components/Sizebar';
+import { useCommandUtil } from './hooks/useCommandUtil';
 import './index.scss';
+
 export const Terminal: React.FC<NonNullable<unknown>> = props => {
   const appState = useAppState('Terminal');
-  const [content, setContent] = useState<string>('');
-  // const commandRef = useRef<HTMLInputElement>(null);
-  const keyHandler = useDebounce((e: KeyboardEvent) => {
-    // if (!set.has(e.key)) e.preventDefault();
-    if (e.key == 'Enter') {
-      console.log('exec command');
-      setContent('');
-    } else setContent(content => content + e.key);
-  }, 16);
-  const controlHandler = useDebounce((e: KeyboardEvent) => {
-    if (e.key == 'Backspace') {
-      setContent(content => content.slice(0, -1));
-    }
-  }, 16);
+  const archor = useRef<HTMLSpanElement>(null);
+  const { rows, input, textCharHandler, controlCharHandler } = useCommandUtil();
+  const textHandler = useDebounce(textCharHandler, 16);
+  const controlHandler = useDebounce(controlCharHandler, 16);
+  // console.log(input.content, input.pointAt);
   useEffect(() => {
-    document.addEventListener('keypress', keyHandler);
+    archor.current?.scrollIntoView();
+    document.addEventListener('keypress', textHandler);
     document.addEventListener('keydown', controlHandler);
     return () => {
-      document.removeEventListener('keypress', keyHandler);
+      document.removeEventListener('keypress', textHandler);
       document.removeEventListener('keydown', controlHandler);
     };
   });
+  // console.log(rows);
   return (
     <div
       className="floatApp winTerminal"
@@ -41,16 +36,18 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
       >
         <div className="flex flex-col flex-1 w-full mt-6 mb-2 overflow-y-scroll scrollbar">
           <div>Welcome to Terminal,type `help` to get started,have fun!</div>
-          <div className="flex-1 w-full">
-            ming#
-            <span className="typing"> {content}</span>
-            {/* <input type="text" className="hidden" ref={commandRef} /> */}
+          {...rows}
+          <div className="w-full">
+            {`ming# ${input.content.slice(0, input.pointAt)}`}
+            <span className="typing" ref={archor}></span>
+            {input.content.slice(input.pointAt)}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
   return (
     <div className="absolute w-full top-2 bg-transparent h-6">

@@ -11,12 +11,10 @@
     height: 80%;
   }
 }
-input {
-  color: transparent;
-  text-shadow: 0 0 0 #000;
-}
 
 .typing::after {
+  display: inline-block;
+  width: 0;
   content: '▌';
   animation: blinker 1s step-end infinite;
 }
