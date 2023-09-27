@@ -10,5 +10,5 @@ export const CommandNotFound: React.FC<{ command: string }> = ({ command }) => {
   );
 };
 export const Row: React.FC<{ content: string }> = props => {
-  return <div className="w-full">{`ming# ${props.content}`}</div>;
+  return <div className="w-full whitespace-pre">{`ming# ${props.content}`}</div>;
 };

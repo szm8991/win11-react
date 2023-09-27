@@ -32,10 +32,10 @@ export const useCommandUtil = () => {
       generateRow(
         <>
           <Row content={input.content} />
-          <CommandNotFound command={input.content.trim()} />
+          <CommandNotFound command={cmd} />
         </>
       );
-    addCommandHistory(cmd);
+    addCommandHistory(input.content);
   };
 
   const controlKeyMap: Record<ControlKey, () => unknown> = {

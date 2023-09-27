@@ -21,7 +21,6 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
       document.removeEventListener('keydown', controlHandler);
     };
   });
-  // console.log(rows);
   return (
     <div
       className="floatApp winTerminal"
@@ -37,7 +36,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
         <div className="flex flex-col flex-1 w-full mt-6 mb-2 overflow-y-scroll scrollbar">
           <div>Welcome to Terminal,type `help` to get started,have fun!</div>
           {...rows}
-          <div className="w-full">
+          <div className="w-full whitespace-pre">
             {`ming# ${input.content.slice(0, input.pointAt)}`}
             <span className="typing" ref={archor}></span>
             {input.content.slice(input.pointAt)}
