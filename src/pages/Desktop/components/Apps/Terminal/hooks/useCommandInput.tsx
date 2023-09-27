@@ -3,11 +3,13 @@ type InputOptions = {
   content: string;
   pointAt: number;
 };
+
 export const useCommandInput = () => {
   const [input, setInput] = useState<InputOptions>({
     content: '',
     pointAt: 0,
   });
+
   const clearInput = () => {
     setInput(input => ({
       content: '',
@@ -35,9 +37,5 @@ export const useCommandInput = () => {
     arrowLeft();
   };
 
-  const tab = () => {
-    console.log('Tab');
-  };
-
-  return { input, setInput, arrowLeft, arrowRight, backspace, tab, clearInput };
+  return { input, setInput, arrowLeft, arrowRight, backspace, clearInput };
 };

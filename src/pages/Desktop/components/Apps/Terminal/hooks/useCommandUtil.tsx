@@ -9,33 +9,88 @@ type ControlKey =
   | 'ArrowLeft'
   | 'ArrowRight'
   | 'Tab';
+
+type CommandKey = 'clear' | 'help';
+
 export const useCommandUtil = () => {
-  const { input, setInput, arrowLeft, arrowRight, backspace, tab, clearInput } = useCommandInput();
-  const { rows, generateRow } = useCommandRows();
+  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
+  const { rows, generateRow, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
+
+  const commandList: Record<CommandKey, () => unknown> = {
+    clear() {
+      clearInput();
+    },
+    help() {
+      console.log('help');
+    },
+  };
 
   const executeCommand = () => {
-    generateRow(
-      <>
-        <Row content={input.content.trim()} />
-        <CommandNotFound command={input.content.trim()} />
-      </>
-    );
+    const cmd = input.content.trim();
+    if (Object.keys(commandList).includes(cmd)) commandList[cmd as CommandKey]();
+    else
+      generateRow(
+        <>
+          <Row content={input.content} />
+          <CommandNotFound command={input.content.trim()} />
+        </>
+      );
+    addCommandHistory(cmd);
   };
+
   const controlKeyMap: Record<ControlKey, () => unknown> = {
     Enter: () => {
-      executeCommand();
+      if (input.content.trim().length !== 0) executeCommand();
       clearInput();
     },
     ArrowLeft: arrowLeft,
     ArrowRight: arrowRight,
     Backspace: backspace,
-    Tab: () => tab,
-    ArrowUp: () => console.log('ArrowUp'),
-    ArrowDown: () => console.log('ArrowDown'),
+    Tab: () => {
+      let alert = true;
+      for (const key of Object.keys(commandList)) {
+        if (key.startsWith(input.content.trim())) {
+          alert = false;
+          setInput(input => ({
+            ...input,
+            content: key,
+            pointAt: key.length,
+          }));
+          break;
+        }
+      }
+      // todo 变成 ⚠️，加一个报警音效
+      if (alert) {
+        console.log('alert');
+      }
+    },
+    ArrowUp: () => {
+      const command = getPreCommand();
+      setInput(input => ({
+        ...input,
+        content: command,
+        pointAt: command.length,
+      }));
+    },
+    ArrowDown: () => {
+      // todo why
+      /* // 这种写法会再渲染一次组件
+      setInput(input => ({
+        ...input,
+        content: getNextCommand(),
+      })); */
+      const command = getNextCommand();
+      setInput(input => ({
+        ...input,
+        content: command,
+        pointAt: command.length,
+      }));
+    },
   };
 
   const textCharHandler = (e: KeyboardEvent) => {
     if (!controlKeyMap[e.key as ControlKey]) {
+      console.log(e.key.length);
       setInput(input => ({
         ...input,
         content: input.content.slice(0, input.pointAt) + e.key + input.content.slice(input.pointAt),
