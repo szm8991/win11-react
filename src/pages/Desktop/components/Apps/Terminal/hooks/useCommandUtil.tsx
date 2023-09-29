@@ -73,24 +73,28 @@ export const useCommandUtil = () => {
       }));
     },
     ArrowDown: () => {
-      // todo why
-      /* // 这种写法会再渲染一次组件
+      /* 
+      setInput传入的回调执行了两次，所以getNextCommand()也执行了两次
+      tmd原来忘了关react严格模式😅,所以setState传入的回调执行了两遍
+      以后记住写法上就用下面的吧
       setInput(input => ({
         ...input,
-        content: getNextCommand(),
+        content: '123',
       })); */
       const command = getNextCommand();
-      setInput(input => ({
-        ...input,
-        content: command,
-        pointAt: command.length,
-      }));
+      setInput(input => {
+        console.log('run');
+        return {
+          ...input,
+          content: command,
+          pointAt: command.length,
+        };
+      });
     },
   };
 
   const textCharHandler = (e: KeyboardEvent) => {
     if (!controlKeyMap[e.key as ControlKey]) {
-      console.log(e.key.length);
       setInput(input => ({
         ...input,
         content: input.content.slice(0, input.pointAt) + e.key + input.content.slice(input.pointAt),

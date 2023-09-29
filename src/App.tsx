@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Desktop } from './pages/Desktop';
 import { LockScreen } from './pages/LockScreen';
 import { useSystemLockState, useUpdateLockState } from './stores/lockState/useState';
@@ -21,12 +21,10 @@ function App() {
     };
   });
   return (
-    <StrictMode>
-      <div className="app">
-        {systemLockState ? <LockScreen fadeIn={eventLock.current == true ? true : false} /> : null}
-        <Desktop />
-      </div>
-    </StrictMode>
+    <div className="app">
+      {systemLockState ? <LockScreen fadeIn={eventLock.current == true ? true : false} /> : null}
+      <Desktop />
+    </div>
   );
 }
 

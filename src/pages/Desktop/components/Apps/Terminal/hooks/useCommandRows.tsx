@@ -27,6 +27,5 @@ export const useCommandRows = () => {
       ? commandHistory.current[++commandIndex.current]
       : commandHistory.current[commandIndex.current];
   };
-
   return { rows, generateRow, getPreCommand, addCommandHistory, getNextCommand };
 };
