@@ -4,13 +4,20 @@ import { useEffect, useRef } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import { useCommandUtil } from './hooks/useCommandUtil';
 import './index.scss';
+import NotificationSound from '/error.mp3';
 
 export const Terminal: React.FC<NonNullable<unknown>> = props => {
   const appState = useAppState('Terminal');
+  const audioPlayer = useRef<HTMLAudioElement>(null);
   const archor = useRef<HTMLSpanElement>(null);
   const { rows, input, textCharHandler, controlCharHandler } = useCommandUtil();
   const textHandler = useDebounce(textCharHandler, 16);
   const controlHandler = useDebounce(controlCharHandler, 16);
+  function playAudio() {
+    audioPlayer.current!.play().catch(e => {
+      console.log(e);
+    });
+  }
   // console.log(input.content, input.pointAt);
   useEffect(() => {
     archor.current?.scrollIntoView();
@@ -27,9 +34,11 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
       style={{ zIndex: appState.zIndex }}
       data-hidden={appState.hidden}
       data-size={appState.size}
+      data-error={true}
     >
       <Toolbar size={appState.size} />
       <div
+        onClick={playAudio}
         className="flex flex-col p-4 pr-[5px] h-full text-white bg-[#1C1C1E]/95 rounded-lg"
         style={{ fontFamily: 'Menlo, monospace', fontSize: '14px' }}
       >
@@ -43,6 +52,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
           </div>
         </div>
       </div>
+      <audio ref={audioPlayer} src={NotificationSound} />
     </div>
   );
 };
