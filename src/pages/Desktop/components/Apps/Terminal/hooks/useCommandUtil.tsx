@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CommandNotFound, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
@@ -15,7 +16,7 @@ type CommandKey = 'clear' | 'help';
 export const useCommandUtil = () => {
   const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
   const { rows, generateRow, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
-
+  const [alert, setAlert] = useState<boolean>(false);
   const commandList: Record<CommandKey, () => unknown> = {
     clear() {
       clearInput();
@@ -59,10 +60,7 @@ export const useCommandUtil = () => {
           break;
         }
       }
-      // todo 变成 ⚠️，加一个报警音效
-      if (alert) {
-        console.log('alert');
-      }
+      alert && setAlert(alert);
     },
     ArrowUp: () => {
       const command = getPreCommand();
@@ -110,6 +108,8 @@ export const useCommandUtil = () => {
   return {
     rows,
     input,
+    alert,
+    setAlert,
     textCharHandler,
     controlCharHandler,
   };

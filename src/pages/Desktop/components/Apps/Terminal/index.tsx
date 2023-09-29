@@ -10,7 +10,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
   const appState = useAppState('Terminal');
   const audioPlayer = useRef<HTMLAudioElement>(null);
   const archor = useRef<HTMLSpanElement>(null);
-  const { rows, input, textCharHandler, controlCharHandler } = useCommandUtil();
+  const { rows, input, alert, setAlert, textCharHandler, controlCharHandler } = useCommandUtil();
   const textHandler = useDebounce(textCharHandler, 16);
   const controlHandler = useDebounce(controlCharHandler, 16);
   function playAudio() {
@@ -18,14 +18,25 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
       console.log(e);
     });
   }
+  const startHandler = (e: AnimationEvent) => {
+    e.animationName === 'shaking' && playAudio();
+  };
+  const endHandler = (e: AnimationEvent) => {
+    e.animationName === 'shaking' && setAlert(false);
+  };
   // console.log(input.content, input.pointAt);
   useEffect(() => {
     archor.current?.scrollIntoView();
+    audioPlayer.current!.playbackRate = 1.5;
     document.addEventListener('keypress', textHandler);
     document.addEventListener('keydown', controlHandler);
+    document.addEventListener('animationstart', startHandler);
+    document.addEventListener('animationend', endHandler);
     return () => {
       document.removeEventListener('keypress', textHandler);
       document.removeEventListener('keydown', controlHandler);
+      document.removeEventListener('animationstart', startHandler);
+      document.removeEventListener('animationend', endHandler);
     };
   });
   return (
@@ -34,11 +45,10 @@ export const Terminal: React.FC<NonNullable<unknown>> = props => {
       style={{ zIndex: appState.zIndex }}
       data-hidden={appState.hidden}
       data-size={appState.size}
-      data-error={true}
+      data-error={alert}
     >
       <Toolbar size={appState.size} />
       <div
-        onClick={playAudio}
         className="flex flex-col p-4 pr-[5px] h-full text-white bg-[#1C1C1E]/95 rounded-lg"
         style={{ fontFamily: 'Menlo, monospace', fontSize: '14px' }}
       >
