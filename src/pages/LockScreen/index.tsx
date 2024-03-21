@@ -10,7 +10,7 @@ export const LockScreen: React.FC<{ fadeIn?: boolean }> = props => {
   const [lockBegin, setLockBegin] = useState(false);
   const updateLockState = useUpdateLockState();
 
-  const toggleLogin: MouseEventHandler<HTMLDivElement> = e => {
+  const toggleLogin: MouseEventHandler<HTMLDivElement> = () => {
     setLogin(!login);
   };
 

@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export const TopTimer: React.FC<{ login: boolean }> = props => {
   const [time, setTime] = useState(new Date());
-  useRAF(options => {
+  useRAF(() => {
     setTime(new Date());
   }, 1000);
   return (

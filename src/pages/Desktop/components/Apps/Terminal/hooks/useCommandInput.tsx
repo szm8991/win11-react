@@ -11,7 +11,7 @@ export const useCommandInput = () => {
   });
 
   const clearInput = () => {
-    setInput(input => ({
+    setInput(() => ({
       content: '',
       pointAt: 0,
     }));

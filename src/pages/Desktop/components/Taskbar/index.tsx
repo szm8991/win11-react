@@ -45,7 +45,7 @@ export const Taskbar = () => {
   // useInterval(() => {
   //   setTime(new Date());
   // }, 1000);
-  useRAF(options => {
+  useRAF(() => {
     setTime(new Date());
   }, 1000);
   const handler: MouseEventHandler<HTMLDivElement> = e => {

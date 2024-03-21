@@ -6,7 +6,7 @@ import { useCommandUtil } from './hooks/useCommandUtil';
 import './index.scss';
 import NotificationSound from '/error.mp3';
 
-export const Terminal: React.FC<NonNullable<unknown>> = props => {
+export const Terminal: React.FC<NonNullable<unknown>> = () => {
   const appState = useAppState('Terminal');
   const audioPlayer = useRef<HTMLAudioElement>(null);
   const archor = useRef<HTMLSpanElement>(null);

@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { Sizebar } from '../components/Sizebar';
 import './index.scss';
 
-export const Edge: React.FC<NonNullable<unknown>> = props => {
+export const Edge: React.FC<NonNullable<unknown>> = () => {
   const appState = useAppState('Edge');
-  const [url, setUrl] = useState('https://www.google.com/?igu=1');
+  const [url] = useState('https://www.google.com/?igu=1');
   return (
     <div
       className="floatApp edgeBrowser"
@@ -64,7 +64,7 @@ const Addressbar: React.FC<{ url: string }> = props => {
   );
 };
 
-const Bookmarkbar: React.FC<NonNullable<unknown>> = props => {
+const Bookmarkbar: React.FC<NonNullable<unknown>> = () => {
   const iframes: Record<string, string> = {
     'https://www.google.com/webhp?igu=1': 'Google',
     'https://bing.com': 'Bing',
