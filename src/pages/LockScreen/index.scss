@@ -24,7 +24,7 @@
     inset: 0;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url('imgs/wallpaper/lock.jpg');
+    background-image: url('/imgs/wallpaper/lock.jpg');
     transition: all 200ms ease-in-out;
   }
   &[data-unlock='true'] {

@@ -14,7 +14,7 @@ export const Icon: React.FC<{
   onClick?: MouseEventHandler<HTMLDivElement>;
 }> = props => {
   if (props.src) {
-    let src = `imgs/icon/${props.src}.png`;
+    let src = `/imgs/icon/${props.src}.png`;
     if (props.src.includes('http')) {
       src = props.src;
     }
