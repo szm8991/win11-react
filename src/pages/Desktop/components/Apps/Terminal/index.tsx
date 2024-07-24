@@ -5,6 +5,7 @@ import { Sizebar } from '../components/Sizebar';
 import { useCommandUtil } from './hooks/useCommandUtil';
 import './index.scss';
 import NotificationSound from '/error.mp3';
+import { useAppDraggable } from './hooks/useAppDraggable';
 
 export const Terminal: React.FC<NonNullable<unknown>> = () => {
   const appState = useAppState('Terminal');
@@ -14,7 +15,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
   const textHandler = useDebounce(textCharHandler, 16);
   const controlHandler = useDebounce(controlCharHandler, 16);
   function playAudio() {
-    audioPlayer.current!.play().catch(e => {
+    audioPlayer.current!.play().catch((e) => {
       console.log(e);
     });
   }
@@ -39,9 +40,13 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
       document.removeEventListener('animationend', endHandler);
     };
   });
+
+  const { draggableRef } = useAppDraggable('.terminal-header');
+
   return (
     <div
       className="floatApp winTerminal"
+      ref={draggableRef}
       style={{ zIndex: appState.zIndex }}
       data-hidden={appState.hidden}
       data-size={appState.size}
@@ -67,9 +72,9 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
   );
 };
 
-const Toolbar: React.FC<{ size: 'full' | 'mini' }> = props => {
+const Toolbar: React.FC<{ size: 'full' | 'mini' }> = (props) => {
   return (
-    <div className="absolute w-full top-2 bg-transparent h-6">
+    <div className="absolute w-full top-2 bg-transparent h-6 terminal-header">
       <div className="absolute w-auto flex space-x-2 ml-1 ">
         <div className="bg-red-500 w-[13px] h-[13px] mt-2 rounded-full ml-1"> </div>
         <div className="bg-yellow-500 w-[13px] h-[13px] mt-2 rounded-full "></div>
