@@ -5,14 +5,36 @@ import { useCommandRows } from './useCommandRows';
 import { useFolderSystem } from './useFolderSystem';
 type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
-type CommandKey = 'clear' | 'help' | 'pwd';
+type CommandKey = 'clear' | 'help' | 'pwd' | 'cat';
 
 export const useCommandUtil = () => {
   const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
   const { rows, generateRow, clearRows, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
   const { currentFolderId, folderSystem } = useFolderSystem();
-  const commandList: Record<CommandKey, () => unknown> = {
+  const commandList: Record<CommandKey, (arg: string) => unknown> = {
+    cat(arg = '') {
+      let find = false;
+      folderSystem.get(`${currentFolderId}`)?.childIds?.forEach((id: number) => {
+        const item = folderSystem.get(`${id}`)!;
+        if (item.name === arg) {
+          find = true;
+          generateRow(
+            <>
+              <Row content={input.content} />
+              <div>{item.content}</div>
+            </>,
+          );
+        }
+      });
+      if (!find)
+        generateRow(
+          <>
+            <Row content={input.content} />
+            <div>{input.content}: 没有那个文件或目录</div>
+          </>,
+        );
+    },
     pwd() {
       generateRow(
         <>
@@ -36,8 +58,8 @@ export const useCommandUtil = () => {
   };
 
   const executeCommand = () => {
-    const cmd = input.content.trim();
-    if (Object.keys(commandList).includes(cmd)) commandList[cmd as CommandKey]();
+    const [cmd, args] = input.content.trim().split(' ');
+    if (Object.keys(commandList).includes(cmd)) commandList[cmd as CommandKey](args);
     else
       generateRow(
         <>
