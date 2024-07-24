@@ -3,6 +3,7 @@ import { CommandNotFound, Help, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
 import { useFolderSystem } from './useFolderSystem';
+
 type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
 type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls';
@@ -29,8 +30,10 @@ export const useCommandUtil = () => {
         generateRow(<Row content={input.content} />);
         generateRow(
           <span className="flex gap-4">
-            {res.map((item: string) => (
-              <span className={item.includes('.') ? 'text-blue-500' : ''}>{item}</span>
+            {res.map((item, index) => (
+              <span key={index} className={item.includes('.') ? 'text-blue-500' : ''}>
+                {item}
+              </span>
             ))}
           </span>,
         );
