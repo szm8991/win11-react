@@ -5,7 +5,7 @@ import { useCommandRows } from './useCommandRows';
 import { useFolderSystem } from './useFolderSystem';
 type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
-type CommandKey = 'clear' | 'help' | 'pwd' | 'cat';
+type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls';
 
 export const useCommandUtil = () => {
   const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
@@ -13,6 +13,29 @@ export const useCommandUtil = () => {
   const [alert, setAlert] = useState<boolean>(false);
   const { currentFolderId, folderSystem } = useFolderSystem();
   const commandList: Record<CommandKey, (arg: string) => unknown> = {
+    ls() {
+      let res: string[] = [];
+      folderSystem.get(`${currentFolderId}`)?.childIds?.forEach((id) => {
+        res.push(folderSystem.get(`${id}`)!.name);
+      });
+      if (res.length === 0) {
+        generateRow(
+          <>
+            <Row content={input.content} />
+            <div>There are no other folders or files in the current directory.</div>
+          </>,
+        );
+      } else {
+        generateRow(<Row content={input.content} />);
+        generateRow(
+          <span className="flex gap-4">
+            {res.map((item: string) => (
+              <span className={item.includes('.') ? 'text-blue-500' : ''}>{item}</span>
+            ))}
+          </span>,
+        );
+      }
+    },
     cat(arg = '') {
       let find = false;
       folderSystem.get(`${currentFolderId}`)?.childIds?.forEach((id: number) => {
