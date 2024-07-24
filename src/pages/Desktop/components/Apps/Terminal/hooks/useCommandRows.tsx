@@ -13,8 +13,16 @@ export const useCommandRows = () => {
   };
 
   const addCommandHistory = (command: string) => {
+    if (
+      commandHistory.current.length > 0 &&
+      commandHistory.current[commandHistory.current.length - 1] === command
+    ) {
+      commandIndex.current = commandHistory.current.length;
+      return;
+    }
+
     commandHistory.current.push(command);
-    commandIndex.current++;
+    commandIndex.current = commandHistory.current.length;
   };
 
   const getPreCommand = () => {
