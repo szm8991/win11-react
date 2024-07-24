@@ -103,18 +103,37 @@ export const useCommandUtil = () => {
     Backspace: backspace,
     Tab: () => {
       let alert = true;
-      for (const key of Object.keys(commandList)) {
-        if (key.startsWith(input.content.trim())) {
-          alert = false;
-          setInput((input) => ({
-            ...input,
-            content: key,
-            pointAt: key.length,
-          }));
-          break;
+      const [cmd, args] = input.content.trim().split(' ');
+      if (args === void 0) {
+        for (const key of Object.keys(commandList)) {
+          if (key.startsWith(input.content.trim())) {
+            alert = false;
+            setInput((input) => ({
+              ...input,
+              content: key,
+              pointAt: key.length,
+            }));
+            break;
+          }
+        }
+        alert && setAlert(alert);
+      } else {
+        // 有参数的情况下，自动补全文件名
+        const childIds = folderSystem.get(`${currentFolderId}`)?.childIds;
+        if (childIds) {
+          for (const id of childIds) {
+            const item = folderSystem.get(`${id}`);
+            if (item && item.name.startsWith(args)) {
+              setInput((input) => ({
+                ...input,
+                content: cmd + ' ' + item.name,
+                pointAt: (cmd + ' ' + item.name).length,
+              }));
+              break;
+            }
+          }
         }
       }
-      alert && setAlert(alert);
     },
     ArrowUp: () => {
       const command = getPreCommand();
