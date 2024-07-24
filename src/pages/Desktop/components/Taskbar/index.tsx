@@ -48,7 +48,7 @@ export const Taskbar = () => {
   useRAF(() => {
     setTime(new Date());
   }, 1000);
-  const handler: MouseEventHandler<HTMLDivElement> = e => {
+  const handler: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!(e.currentTarget instanceof HTMLDivElement)) {
       return;
     }
@@ -58,12 +58,7 @@ export const Taskbar = () => {
     <>
       <div className="taskbar min-w-full h-12 absolute bottom-0 flex justify-between items-center px-3">
         <div className="center absolute bottom-0 min-w-full flex h-12 justify-center">
-          <Icon
-            width={24}
-            src="widget"
-            invert={false}
-            className="task-icon active-transition icon-1"
-          />
+          <Icon width={24} src="widget" invert={false} className="task-icon active-transition icon-1" />
           {taskbarApps.map(({ app, src, invert }, index) => {
             return (
               <Icon
@@ -98,7 +93,7 @@ export const Taskbar = () => {
             </div>
             <div>
               {time.toLocaleDateString('en-US', {
-                year: '2-digit',
+                year: 'numeric',
                 month: '2-digit',
                 day: 'numeric',
               })}
