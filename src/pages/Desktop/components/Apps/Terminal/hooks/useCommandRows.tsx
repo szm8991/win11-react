@@ -5,8 +5,11 @@ export const useCommandRows = () => {
   const commandHistory = useRef<string[]>([]);
   const commandIndex = useRef<number>(0);
 
+  const clearRows = () => {
+    setRows([]);
+  };
   const generateRow = (row: JSX.Element) => {
-    setRows(s => [...s, row]);
+    setRows((s) => [...s, row]);
   };
 
   const addCommandHistory = (command: string) => {
@@ -27,5 +30,12 @@ export const useCommandRows = () => {
       ? commandHistory.current[++commandIndex.current]
       : commandHistory.current[commandIndex.current];
   };
-  return { rows, generateRow, getPreCommand, addCommandHistory, getNextCommand };
+  return {
+    rows,
+    generateRow,
+    clearRows,
+    getPreCommand,
+    addCommandHistory,
+    getNextCommand,
+  };
 };

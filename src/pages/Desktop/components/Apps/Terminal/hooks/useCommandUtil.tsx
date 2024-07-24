@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CommandNotFound, Row } from '../components';
+import { CommandNotFound, Help, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
 type ControlKey =
@@ -14,27 +14,42 @@ type ControlKey =
 type CommandKey = 'clear' | 'help';
 
 export const useCommandUtil = () => {
-  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
-  const { rows, generateRow, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
+  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } =
+    useCommandInput();
+  const {
+    rows,
+    generateRow,
+    clearRows,
+    addCommandHistory,
+    getPreCommand,
+    getNextCommand,
+  } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
   const commandList: Record<CommandKey, () => unknown> = {
     clear() {
       clearInput();
+      clearRows();
     },
     help() {
-      console.log('help');
+      generateRow(
+        <>
+          <Row content={input.content} />
+          <Help />
+        </>,
+      );
     },
   };
 
   const executeCommand = () => {
     const cmd = input.content.trim();
-    if (Object.keys(commandList).includes(cmd)) commandList[cmd as CommandKey]();
+    if (Object.keys(commandList).includes(cmd))
+      commandList[cmd as CommandKey]();
     else
       generateRow(
         <>
           <Row content={input.content} />
           <CommandNotFound command={cmd} />
-        </>
+        </>,
       );
     addCommandHistory(input.content);
   };
@@ -52,7 +67,7 @@ export const useCommandUtil = () => {
       for (const key of Object.keys(commandList)) {
         if (key.startsWith(input.content.trim())) {
           alert = false;
-          setInput(input => ({
+          setInput((input) => ({
             ...input,
             content: key,
             pointAt: key.length,
@@ -64,7 +79,7 @@ export const useCommandUtil = () => {
     },
     ArrowUp: () => {
       const command = getPreCommand();
-      setInput(input => ({
+      setInput((input) => ({
         ...input,
         content: command,
         pointAt: command.length,
@@ -77,10 +92,10 @@ export const useCommandUtil = () => {
       以后记住写法上就用下面的吧
       setInput(input => ({
         ...input,
-        content: '123',
+        content: getNextCommand(),
       })); */
       const command = getNextCommand();
-      setInput(input => {
+      setInput((input) => {
         console.log('run');
         return {
           ...input,
@@ -93,16 +108,21 @@ export const useCommandUtil = () => {
 
   const textCharHandler = (e: KeyboardEvent) => {
     if (!controlKeyMap[e.key as ControlKey]) {
-      setInput(input => ({
+      setInput((input) => ({
         ...input,
-        content: input.content.slice(0, input.pointAt) + e.key + input.content.slice(input.pointAt),
+        content:
+          input.content.slice(0, input.pointAt) +
+          e.key +
+          input.content.slice(input.pointAt),
       }));
       arrowRight();
     }
   };
 
   const controlCharHandler = (e: KeyboardEvent) => {
-    if (controlKeyMap[e.key as ControlKey]) controlKeyMap[e.key as ControlKey]();
+    if (controlKeyMap[e.key as ControlKey]) {
+      controlKeyMap[e.key as ControlKey]();
+    }
   };
 
   return {
