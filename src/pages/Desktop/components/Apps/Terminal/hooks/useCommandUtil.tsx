@@ -2,30 +2,25 @@ import { useState } from 'react';
 import { CommandNotFound, Help, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
-type ControlKey =
-  | 'Enter'
-  | 'Backspace'
-  | 'ArrowUp'
-  | 'ArrowDown'
-  | 'ArrowLeft'
-  | 'ArrowRight'
-  | 'Tab';
+import { useFolderSystem } from './useFolderSystem';
+type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
-type CommandKey = 'clear' | 'help';
+type CommandKey = 'clear' | 'help' | 'pwd';
 
 export const useCommandUtil = () => {
-  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } =
-    useCommandInput();
-  const {
-    rows,
-    generateRow,
-    clearRows,
-    addCommandHistory,
-    getPreCommand,
-    getNextCommand,
-  } = useCommandRows();
+  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
+  const { rows, generateRow, clearRows, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
+  const { currentFolderId, folderSystem } = useFolderSystem();
   const commandList: Record<CommandKey, () => unknown> = {
+    pwd() {
+      generateRow(
+        <>
+          <Row content={input.content} />
+          <div>{folderSystem.get(`${currentFolderId}`)?.name}</div>
+        </>,
+      );
+    },
     clear() {
       clearInput();
       clearRows();
@@ -42,8 +37,7 @@ export const useCommandUtil = () => {
 
   const executeCommand = () => {
     const cmd = input.content.trim();
-    if (Object.keys(commandList).includes(cmd))
-      commandList[cmd as CommandKey]();
+    if (Object.keys(commandList).includes(cmd)) commandList[cmd as CommandKey]();
     else
       generateRow(
         <>
@@ -110,10 +104,7 @@ export const useCommandUtil = () => {
     if (!controlKeyMap[e.key as ControlKey]) {
       setInput((input) => ({
         ...input,
-        content:
-          input.content.slice(0, input.pointAt) +
-          e.key +
-          input.content.slice(input.pointAt),
+        content: input.content.slice(0, input.pointAt) + e.key + input.content.slice(input.pointAt),
       }));
       arrowRight();
     }
