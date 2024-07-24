@@ -26,14 +26,14 @@ export const initialState: State = {
     hidden: true,
     open: false,
     active: false,
-    size: 'full',
+    size: 'mini',
     zIndex: 0,
   },
   Terminal: {
     hidden: true,
     open: false,
     active: false,
-    size: 'full',
+    size: 'mini',
     zIndex: 0,
   },
 };
