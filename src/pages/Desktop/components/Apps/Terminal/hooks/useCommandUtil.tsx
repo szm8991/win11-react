@@ -1,19 +1,63 @@
 import { useState } from 'react';
-import { CommandNotFound, Help, Row } from '../components';
+import { CommandNotFound, Help, NoSuchFileOrDirectory, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
 import { useFolderSystem } from './useFolderSystem';
 
 type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
-type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls';
+type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls' | 'cd';
 
 export const useCommandUtil = () => {
   const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
   const { rows, generateRow, clearRows, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
-  const { currentFolderId, folderSystem } = useFolderSystem();
+  const { currentFolderId, setCurrentFolderId, folderSystem, currentDirectory, setCurrentDirectory, path } =
+    useFolderSystem();
+
+  const searchFile = (arg: string) => {
+    const args = [arg, arg.toUpperCase(), arg.toLowerCase(), arg.charAt(0).toUpperCase() + arg.slice(1)];
+    const childIds = folderSystem.get(`${currentFolderId}`)?.childIds;
+    if (childIds)
+      for (const item of folderSystem.entries()) {
+        if (childIds.includes(item[1].id) && args.includes(item[1].name)) return item[1].id;
+      }
+  };
+
   const commandList: Record<CommandKey, (arg: string) => unknown> = {
+    cd(arg = '') {
+      const dir = currentDirectory;
+      if (!arg || arg === '..') {
+        // 处理文件路径
+        const dirArr = dir.split('/');
+        dirArr.length = Math.max(0, dirArr.length - 2);
+        if (!dirArr.length) setCurrentDirectory(`${dirArr.join('')}`);
+        else setCurrentDirectory(`${dirArr.join('')}/`);
+        // 处理当前文件夹
+        setCurrentFolderId(folderSystem.get(`${currentFolderId}`)?.parentId as number);
+        return;
+      }
+
+      const id = searchFile(arg);
+      // 如果子目录存在,设置路径、更新当前目录id
+      if (id) {
+        const res = `${dir}/${folderSystem.get(`${id}`)?.name}`;
+        setCurrentFolderId(id);
+        setCurrentDirectory(res);
+        generateRow(
+          <>
+            <Row pwd={currentDirectory} content={input.content} />
+          </>,
+        );
+      } else {
+        generateRow(
+          <>
+            <Row pwd={currentDirectory} content={input.content} />
+            <NoSuchFileOrDirectory command={arg} />
+          </>,
+        );
+      }
+    },
     ls() {
       let res: string[] = [];
       folderSystem.get(`${currentFolderId}`)?.childIds?.forEach((id) => {
@@ -22,12 +66,12 @@ export const useCommandUtil = () => {
       if (res.length === 0) {
         generateRow(
           <>
-            <Row content={input.content} />
+            <Row pwd={currentDirectory} content={input.content} />
             <div>There are no other folders or files in the current directory.</div>
           </>,
         );
       } else {
-        generateRow(<Row content={input.content} />);
+        generateRow(<Row pwd={currentDirectory} content={input.content} />);
         generateRow(
           <span className="flex gap-4">
             {res.map((item, index) => (
@@ -47,7 +91,7 @@ export const useCommandUtil = () => {
           find = true;
           generateRow(
             <>
-              <Row content={input.content} />
+              <Row pwd={currentDirectory} content={input.content} />
               <div>{item.content}</div>
             </>,
           );
@@ -56,7 +100,7 @@ export const useCommandUtil = () => {
       if (!find)
         generateRow(
           <>
-            <Row content={input.content} />
+            <Row pwd={currentDirectory} content={input.content} />
             <div>{input.content}: 没有那个文件或目录</div>
           </>,
         );
@@ -64,7 +108,7 @@ export const useCommandUtil = () => {
     pwd() {
       generateRow(
         <>
-          <Row content={input.content} />
+          <Row pwd={currentDirectory} content={input.content} />
           <div>{folderSystem.get(`${currentFolderId}`)?.name}</div>
         </>,
       );
@@ -76,7 +120,7 @@ export const useCommandUtil = () => {
     help() {
       generateRow(
         <>
-          <Row content={input.content} />
+          <Row pwd={currentDirectory} content={input.content} />
           <Help />
         </>,
       );
@@ -89,7 +133,7 @@ export const useCommandUtil = () => {
     else
       generateRow(
         <>
-          <Row content={input.content} />
+          <Row pwd={folderSystem.get(`${currentFolderId}`)!.name} content={input.content} />
           <CommandNotFound command={cmd} />
         </>,
       );
@@ -190,5 +234,6 @@ export const useCommandUtil = () => {
     setAlert,
     textCharHandler,
     controlCharHandler,
+    path,
   };
 };

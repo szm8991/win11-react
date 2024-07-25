@@ -6,13 +6,12 @@ import { useCommandUtil } from './hooks/useCommandUtil';
 import './index.scss';
 import NotificationSound from '/error.mp3';
 import { useAppDraggable } from './hooks/useAppDraggable';
-import { useFolderSystem } from './hooks/useFolderSystem';
 
 export const Terminal: React.FC<NonNullable<unknown>> = () => {
   const appState = useAppState('Terminal');
   const audioPlayer = useRef<HTMLAudioElement>(null);
   const archor = useRef<HTMLSpanElement>(null);
-  const { rows, input, alert, setAlert, textCharHandler, controlCharHandler } = useCommandUtil();
+  const { rows, input, alert, setAlert, textCharHandler, controlCharHandler, path } = useCommandUtil();
   const textHandler = useDebounce(textCharHandler, 16);
   const controlHandler = useDebounce(controlCharHandler, 16);
   function playAudio() {
@@ -44,8 +43,6 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
 
   const { draggableRef } = useAppDraggable('.terminal-header');
 
-  const { currentFolderId, folderSystem } = useFolderSystem();
-
   return (
     <div
       className="floatApp winTerminal"
@@ -64,7 +61,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
           <div>Welcome to Terminal,type `help` to get started,have fun!</div>
           {...rows}
           <div className="w-full whitespace-pre">
-            {`ming:${folderSystem.get(`${currentFolderId}`)!.name} # ${input.content.slice(0, input.pointAt)}`}
+            {`${path} ${input.content.slice(0, input.pointAt)}`}
             <span className="typing" ref={archor}></span>
             {input.content.slice(input.pointAt)}
           </div>

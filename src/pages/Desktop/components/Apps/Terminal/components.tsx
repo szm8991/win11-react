@@ -1,4 +1,12 @@
-import { useFolderSystem } from './hooks/useFolderSystem';
+export const NoSuchFileOrDirectory: React.FC<{ command: string }> = ({ command }) => {
+  return (
+    <div className="flex w-full h-6">
+      <span className="mr-2 text-red-400">
+        cd: no such file or directory:<span className="text-purple-400">{command}</span>
+      </span>
+    </div>
+  );
+};
 
 export const CommandNotFound: React.FC<{ command: string }> = ({ command }) => {
   return (
@@ -11,11 +19,8 @@ export const CommandNotFound: React.FC<{ command: string }> = ({ command }) => {
     </>
   );
 };
-export const Row: React.FC<{ content: string }> = (props) => {
-  const { currentFolderId, folderSystem } = useFolderSystem();
-  return (
-    <div className="w-full whitespace-pre">{`ming:${folderSystem.get(`${currentFolderId}`)!.name} # ${props.content}`}</div>
-  );
+export const Row: React.FC<{ pwd: string; content: string }> = (props) => {
+  return <div className="w-full whitespace-pre">{`ming:${props.pwd} # ${props.content}`}</div>;
 };
 
 export function Help() {
