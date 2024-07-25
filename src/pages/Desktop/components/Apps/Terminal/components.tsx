@@ -1,7 +1,7 @@
 export const NoSuchFileOrDirectory: React.FC<{ command: string }> = ({ command }) => {
   return (
-    <div className="flex w-full h-6">
-      <span className="mr-2 text-red-400">
+    <div className="flex w-full">
+      <span className="text-red-400 w-full break-all">
         cd: no such file or directory:<span className="text-purple-400">{command}</span>
       </span>
     </div>
@@ -11,16 +11,14 @@ export const NoSuchFileOrDirectory: React.FC<{ command: string }> = ({ command }
 export const CommandNotFound: React.FC<{ command: string }> = ({ command }) => {
   return (
     <>
-      <div className="flex w-full h-6">
-        <span className="mr-2">
-          zsh: command not found: <span>{command}</span>
-        </span>
+      <div className="flex w-full">
+        <span className="w-full break-all">zsh: command not found: {command}</span>
       </div>
     </>
   );
 };
 export const Row: React.FC<{ pwd: string; content: string }> = (props) => {
-  return <div className="w-full whitespace-pre">{`ming:${props.pwd} # ${props.content}`}</div>;
+  return <div className="w-full whitespace-pre-wrap break-all">{`ming:${props.pwd} # ${props.content}`}</div>;
 };
 
 export function Help() {

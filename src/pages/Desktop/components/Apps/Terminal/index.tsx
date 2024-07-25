@@ -57,10 +57,10 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
         className="flex flex-col p-4 pr-[5px] h-full text-white bg-[#1C1C1E]/95 rounded-lg"
         style={{ fontFamily: 'Menlo, monospace', fontSize: '14px' }}
       >
-        <div className="flex flex-col flex-1 w-full mt-6 mb-2 overflow-y-scroll scrollbar">
+        <div className="flex flex-col flex-1 w-full mt-6 mb-2 overflow-y-scroll scrollbar pr-4">
           <div>Welcome to Terminal,type `help` to get started,have fun!</div>
           {...rows}
-          <div className="w-full whitespace-pre">
+          <div className="w-full whitespace-pre-wrap break-all">
             {`${path} ${input.content.slice(0, input.pointAt)}`}
             <span className="typing" ref={archor}></span>
             {input.content.slice(input.pointAt)}
