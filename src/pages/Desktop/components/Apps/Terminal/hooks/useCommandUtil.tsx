@@ -6,14 +6,21 @@ import { useFolderSystem } from './useFolderSystem';
 
 type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
 
-type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls' | 'cd';
+type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls' | 'cd' | 'mkdir' | 'touch';
 
 export const useCommandUtil = () => {
   const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
   const { rows, generateRow, clearRows, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
-  const { currentFolderId, setCurrentFolderId, folderSystem, currentDirectory, setCurrentDirectory, path } =
-    useFolderSystem();
+  const {
+    currentFolderId,
+    setCurrentFolderId,
+    folderSystem,
+    setFolderSystem,
+    currentDirectory,
+    setCurrentDirectory,
+    path,
+  } = useFolderSystem();
 
   const searchFile = (arg: string) => {
     const args = [arg, arg.toUpperCase(), arg.toLowerCase(), arg.charAt(0).toUpperCase() + arg.slice(1)];
@@ -25,6 +32,47 @@ export const useCommandUtil = () => {
   };
 
   const commandList: Record<CommandKey, (arg: string) => unknown> = {
+    mkdir(arg = '') {
+      const size = folderSystem.size;
+      const newFolderSysteam = folderSystem.set(`${size}`, {
+        id: size,
+        name: arg,
+        childIds: [],
+        parentId: currentFolderId,
+      });
+      const childIds = folderSystem.get(`${currentFolderId}`)!.childIds;
+      childIds && childIds.push(size);
+      setFolderSystem(newFolderSysteam);
+      generateRow(
+        <>
+          <Row pwd={currentDirectory} content={input.content} />
+        </>,
+      );
+    },
+    touch(arg = '') {
+      const size = folderSystem.size;
+      const newFolderSysteam = folderSystem.set(`${size}`, {
+        id: size,
+        name: arg,
+        content: (
+          <div>
+            <h1>
+              This is <span className="text-red-400 underline">{arg}</span> file!
+            </h1>
+            <p>Imaging there's a lot of content here...</p>
+          </div>
+        ),
+        parentId: currentFolderId,
+      });
+      const childIds = folderSystem.get(`${currentFolderId}`)!.childIds;
+      childIds && childIds.push(size);
+      setFolderSystem(newFolderSysteam);
+      generateRow(
+        <>
+          <Row pwd={currentDirectory} content={input.content} />
+        </>,
+      );
+    },
     cd(arg = '') {
       const dir = currentDirectory;
       if (!arg || arg === '..') {
