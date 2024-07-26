@@ -1,17 +1,35 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CommandNotFound, Help, NoSuchFileOrDirectory, Row } from '../components';
 import { useCommandInput } from './useCommandInput';
 import { useCommandRows } from './useCommandRows';
 import { useFolderSystem } from './useFolderSystem';
 
-type ControlKey = 'Enter' | 'Backspace' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Tab';
+type ControlKey =
+  | 'Enter'
+  | 'Backspace'
+  | 'ArrowUp'
+  | 'ArrowDown'
+  | 'ArrowLeft'
+  | 'ArrowRight'
+  | 'Tab'
+  | 'Home'
+  | 'End'
+  | 'Delete'
+  | 'Ctrl_a'
+  | 'Ctrl_c'
+  | 'Ctrl_x'
+  | 'Ctrl_v';
 
 type CommandKey = 'clear' | 'help' | 'pwd' | 'cat' | 'ls' | 'cd' | 'mkdir' | 'touch';
 
 export const useCommandUtil = () => {
-  const { input, setInput, arrowLeft, arrowRight, backspace, clearInput } = useCommandInput();
+  const userInput = useRef<HTMLSpanElement>(null);
+  const { input, setInput, arrowLeft, arrowRight, backspace, del, clearInput } = useCommandInput();
   const { rows, generateRow, clearRows, addCommandHistory, getPreCommand, getNextCommand } = useCommandRows();
   const [alert, setAlert] = useState<boolean>(false);
+
+  const isHighlight = useRef(false);
+
   const {
     currentFolderId,
     setCurrentFolderId,
@@ -189,6 +207,57 @@ export const useCommandUtil = () => {
   };
 
   const controlKeyMap: Record<ControlKey, () => unknown> = {
+    Ctrl_a: () => {
+      if (input.content.length === 0) return;
+      if (!isHighlight.current) {
+        isHighlight.current = true;
+        const str = userInput.current?.textContent;
+        if (!str) return;
+        const range = new Range();
+        range.setStart(userInput.current!.firstChild!, 0);
+        range.setEnd(userInput.current!.firstChild!, input.content.slice(0, input.pointAt).length);
+        // 定义高亮
+        const highlight = new Highlight(range);
+        // 注册高亮
+        CSS.highlights.set('terminal-select-all-highlight', highlight);
+      } else {
+        isHighlight.current = false;
+        // 取消高亮
+        CSS.highlights.delete('terminal-select-all-highlight');
+      }
+    },
+    Ctrl_c: async () => {
+      if (!isHighlight.current) return;
+      try {
+        await navigator.clipboard.writeText(input.content);
+
+        isHighlight.current = false;
+        CSS.highlights.delete('terminal-select-all-highlight');
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    },
+    Ctrl_x: async () => {
+      if (!isHighlight.current) return;
+      try {
+        await navigator.clipboard.writeText(input.content);
+
+        isHighlight.current = false;
+        CSS.highlights.delete('terminal-select-all-highlight');
+        clearInput();
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    },
+    Ctrl_v: async () => {
+      const text = await navigator.clipboard.readText();
+      if (text.length === 0) return;
+      setInput((input) => ({
+        ...input,
+        content: input.content.slice(0, input.pointAt) + text + input.content.slice(input.pointAt),
+        pointAt: input.pointAt + text.length,
+      }));
+    },
     Enter: () => {
       if (input.content.trim().length !== 0) executeCommand();
       clearInput();
@@ -196,6 +265,7 @@ export const useCommandUtil = () => {
     ArrowLeft: arrowLeft,
     ArrowRight: arrowRight,
     Backspace: backspace,
+    Delete: del,
     Tab: () => {
       let alert = true;
       const [cmd, args] = input.content.trim().split(' ');
@@ -257,6 +327,18 @@ export const useCommandUtil = () => {
         };
       });
     },
+    Home: () => {
+      setInput((input) => ({
+        ...input,
+        pointAt: 0,
+      }));
+    },
+    End: () => {
+      setInput((input) => ({
+        ...input,
+        pointAt: input.content.length,
+      }));
+    },
   };
 
   const textCharHandler = (e: KeyboardEvent) => {
@@ -270,12 +352,15 @@ export const useCommandUtil = () => {
   };
 
   const controlCharHandler = (e: KeyboardEvent) => {
-    if (controlKeyMap[e.key as ControlKey]) {
+    if (e.ctrlKey && /[a-zA-Z]/.test(e.key)) {
+      controlKeyMap[`Ctrl_${e.key}` as ControlKey]?.();
+    } else if (controlKeyMap[e.key as ControlKey]) {
       controlKeyMap[e.key as ControlKey]();
     }
   };
 
   return {
+    userInput,
     rows,
     input,
     alert,

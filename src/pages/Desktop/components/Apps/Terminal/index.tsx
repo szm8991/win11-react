@@ -11,7 +11,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
   const appState = useAppState('Terminal');
   const audioPlayer = useRef<HTMLAudioElement>(null);
   const archor = useRef<HTMLSpanElement>(null);
-  const { rows, input, alert, setAlert, textCharHandler, controlCharHandler, path } = useCommandUtil();
+  const { userInput, rows, input, alert, setAlert, textCharHandler, controlCharHandler, path } = useCommandUtil();
   const textHandler = useDebounce(textCharHandler, 16);
   const controlHandler = useDebounce(controlCharHandler, 16);
   function playAudio() {
@@ -61,7 +61,7 @@ export const Terminal: React.FC<NonNullable<unknown>> = () => {
           <div>Welcome to Terminal,type `help` to get started,have fun!</div>
           {...rows}
           <div className="w-full whitespace-pre-wrap break-all">
-            {`${path} ${input.content.slice(0, input.pointAt)}`}
+            {path} <span ref={userInput}>{input.content.slice(0, input.pointAt)}</span>
             <span className="typing" ref={archor}></span>
             {input.content.slice(input.pointAt)}
           </div>
